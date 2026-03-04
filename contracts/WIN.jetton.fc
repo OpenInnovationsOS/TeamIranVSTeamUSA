@@ -1,0 +1,169 @@
+;; WIN Token Jetton Smart Contract
+;; Total Supply: 1,000,000,000,000 (1 Trillion)
+;; Standard: TEP-74 (Jetton)
+
+#include "imports/stdlib.fc";
+
+;; Storage variables
+global int total_supply;
+global cell owner_address;
+global cell jetton_data;
+global bool mint_disabled;
+
+;; Jetton metadata
+slice get_jetton_data() method_id {
+    return begin_cell()
+        .store_uint(0, 1) ;; initialized
+        .store_coins(total_supply)
+        .store_slice(owner_address)
+        .store_ref(jetton_data)
+        .end_cell()
+        .begin_parse();
+}
+
+;; Get jetton wallet data (internal)
+slice get_jetton_wallet_data(slice owner_address) impure {
+    ;; This would typically query the user's jetton wallet
+    ;; For simplicity, we'll return a basic structure
+    return begin_cell()
+        .store_uint(0, 1) ;; initialized
+        .store_coins(0)     ;; balance (would be fetched from wallet)
+        .store_slice(owner_address)
+        .store_slice(my_address())
+        .end_cell()
+        .begin_parse();
+}
+
+;; Mint new tokens (only owner)
+() mint(slice to_address, int amount) impure method_id {
+    ;; Verify sender is owner
+    throw_unless(401, equal_slices(sender_address(), owner_address));
+    
+    ;; Check if minting is disabled
+    throw_unless(402, ~ mint_disabled);
+    
+    ;; Check total supply limit (1 trillion)
+    throw_unless(403, total_supply + amount <= 1000000000000);
+    
+    ;; Update total supply
+    total_supply += amount;
+    
+    ;; Send mint notification
+    var msg = begin_cell()
+        .store_uint(0x6, 4) ;; internal message
+        .store_slice(to_address)
+        .store_coins(0)
+        .store_uint(0, 1 + 4 + 4 + 64 + 32 + 1 + 1)
+        .store_uint(0x178d4519, 32) ;; op::internal_transfer
+        .store_uint(0, 64) ;; query_id
+        .store_coins(amount)
+        .store_slice(my_address())
+        .store_slice(to_address)
+        .store_coins(0) ;; forward_ton_amount
+        .store_uint(0, 1) ;; forward_payload empty
+        .end_cell();
+    
+    send_raw_message(msg, 64); ;; carry all remaining value
+}
+
+;; Disable minting permanently (only owner)
+() disable_mint() impure method_id {
+    throw_unless(401, equal_slices(sender_address(), owner_address));
+    mint_disabled = true;
+}
+
+;; Burn tokens
+() burn(int amount) impure method_id {
+    ;; This would typically be called from jetton wallet
+    ;; For simplicity, we'll just reduce total supply
+    throw_unless(404, total_supply >= amount);
+    total_supply -= amount;
+    
+    ;; Send burn notification
+    var msg = begin_cell()
+        .store_uint(0x6, 4) ;; internal message
+        .store_slice(owner_address)
+        .store_coins(0)
+        .store_uint(0, 1 + 4 + 4 + 64 + 32 + 1 + 1)
+        .store_uint(0x595f07bc, 32) ;; op::burn_notification
+        .store_uint(0, 64) ;; query_id
+        .store_coins(amount)
+        .store_slice(sender_address())
+        .end_cell();
+    
+    send_raw_message(msg, 64);
+}
+
+;; Get contract owner
+slice get_owner() method_id {
+    return owner_address;
+}
+
+;; Get total supply
+int get_total_supply() method_id {
+    return total_supply;
+}
+
+;; Check if minting is disabled
+bool is_mint_disabled() method_id {
+    return mint_disabled;
+}
+
+;; Initialize contract
+() recv_internal(int my_balance, int msg_value, cell in_msg_full, slice in_msg_body) impure {
+    if (in_msg_body.slice_empty?()) { 
+        return (); 
+    }
+    
+    slice cs = in_msg_full.begin_parse();
+    int flags = cs~load_uint(4);
+    slice sender_address = cs~load_msg_addr();
+    
+    cs~load_msg_addr(); ;; skip dst
+    cs~load_coins(); ;; skip value
+    cs~load_uint(1); ;; skip ihr_disabled
+    cs~load_uint(2); ;; skip bounce
+    cs~load_uint(1); ;; skip bounced
+    cs~load_uint(64); ;; skip created_at
+    
+    slice forward_payload = in_msg_body;
+    int op = forward_payload~load_uint(32);
+    
+    ;; Handle different operations
+    if (op == 1) { ;; deploy jetton wallet
+        ;; Deploy logic would go here
+        return ();
+    }
+    
+    if (op == 3) { ;; transfer notification
+        ;; Transfer logic would go here
+        return ();
+    }
+    
+    if (op == 4) { ;; burn notification
+        int amount = forward_payload~load_coins();
+        burn(amount);
+        return ();
+    }
+    
+    return ();
+}
+
+;; Get jetton metadata
+cell get_jetton_metadata() method_id {
+    return begin_cell()
+        .store_uint(0, 8) ;; off-chain content
+        .store_ref(begin_cell()
+            .store_uint(0, 8) ;; snake format
+            .store_string("WIN")
+            .end_cell())
+        .store_ref(begin_cell()
+            .store_uint(0, 8) ;; snake format
+            .store_string("Team Iran vs Team USA WIN Token")
+            .end_cell())
+        .store_ref(begin_cell()
+            .store_uint(0, 8) ;; snake format
+            .store_string("https://example.com/win.png")
+            .end_cell())
+        .end_cell();
+}

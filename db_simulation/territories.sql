@@ -1,0 +1,1 @@
+CREATE TABLE territories (id SERIAL PRIMARY KEY, name VARCHAR(255), description TEXT, controlling_faction VARCHAR(50), iran_score INTEGER DEFAULT 0, usa_score INTEGER DEFAULT 0, total_battles INTEGER DEFAULT 0, last_capture TIMESTAMP, updated_at TIMESTAMP DEFAULT NOW()); 

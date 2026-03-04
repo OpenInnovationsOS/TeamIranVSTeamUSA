@@ -1,0 +1,1 @@
+CREATE TABLE transactions (id SERIAL PRIMARY KEY, user_id INTEGER REFERENCES users(id), type VARCHAR(50), amount BIGINT, balance_after BIGINT, description TEXT, reference_id VARCHAR(255), created_at TIMESTAMP DEFAULT NOW()); 

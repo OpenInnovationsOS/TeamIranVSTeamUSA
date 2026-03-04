@@ -1,0 +1,1 @@
+CREATE TABLE game_events (id SERIAL PRIMARY KEY, title VARCHAR(255), description TEXT, event_type VARCHAR(50), start_time TIMESTAMP, end_time TIMESTAMP, reward_data JSONB, is_active BOOLEAN DEFAULT TRUE); 

@@ -1,0 +1,1 @@
+CREATE TABLE battles (id SERIAL PRIMARY KEY, attacker_id INTEGER REFERENCES users(id), defender_id INTEGER REFERENCES users(id), attacker_faction VARCHAR(50), defender_faction VARCHAR(50), wager_amount BIGINT, winner_id INTEGER, status VARCHAR(20) DEFAULT 'pending', battle_data JSONB, created_at TIMESTAMP DEFAULT NOW(), completed_at TIMESTAMP); 

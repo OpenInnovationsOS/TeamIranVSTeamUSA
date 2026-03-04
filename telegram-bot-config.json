@@ -1,0 +1,12 @@
+{
+    "bot_token": "DEMO_BOT_TOKEN_123456789",
+    "webhook_url": "https://team-iran-vs-usa-demo.com/webhook",
+    "domain": "team-iran-vs-usa-demo.com",
+    "bot_username": "TeamIranVsUSAGameBot",
+    "bot_name": "Team Iran vs Team USA Game",
+    "setup_date": "Mon 03/02/2026 23:55:49.51",
+    "commands": [
+        "start", "help", "stats", "leaderboard", "faction", 
+        "referral", "balance", "battles", "territories", "missions"
+    ]
+}

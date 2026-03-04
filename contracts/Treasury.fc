@@ -1,0 +1,110 @@
+;; Treasury Contract for TON payments
+;; Receives TON payments and logs them for admin access
+
+#include "imports/stdlib.fc";
+
+;; Storage variables
+global cell owner_address;
+global cell pending_withdrawals;
+global int total_received;
+
+;; Initialize contract
+() recv_internal(int my_balance, int msg_value, cell in_msg_full, slice in_msg_body) impure {
+    if (in_msg_body.slice_empty?()) { 
+        return (); 
+    }
+    
+    slice cs = in_msg_full.begin_parse();
+    int flags = cs~load_uint(4);
+    slice sender_address = cs~load_msg_addr();
+    
+    cs~load_msg_addr(); ;; skip dst
+    int value = cs~load_coins();
+    cs~load_uint(1); ;; skip ihr_disabled
+    cs~load_uint(2); ;; skip bounce
+    cs~load_uint(1); ;; skip bounced
+    cs~load_uint(64); ;; skip created_at
+    
+    ;; Handle deposit
+    if (msg_value > 0) {
+        total_received += msg_value;
+        
+        ;; Log the payment (in production, this would emit an event)
+        ;; For now, we'll store it in pending withdrawals for admin
+        var log_entry = begin_cell()
+            .store_slice(sender_address)
+            .store_coins(msg_value)
+            .store_uint(now(), 64)
+            .end_cell();
+        
+        pending_withdrawals~push_ref(log_entry);
+        
+        ;; Send confirmation back to sender
+        var msg = begin_cell()
+            .store_uint(0x10, 6) ;; external message
+            .store_slice(sender_address)
+            .store_coins(0)
+            .store_uint(0, 1 + 4 + 4 + 64 + 32 + 1 + 1)
+            .store_uint(0x12345678, 32) ;; payment received op
+            .store_uint(0, 64) ;; query_id
+            .store_coins(msg_value)
+            .end_cell();
+        
+        send_raw_message(msg, 1); ;; pay gas separately
+    }
+    
+    ;; Handle withdrawal (only owner)
+    slice cs_body = in_msg_body;
+    if (cs_body.slice_empty?()) { return (); }
+    
+    int op = cs_body~load_uint(32);
+    
+    if (op == 0x5fcc3d14) { ;; withdraw op
+        throw_unless(401, equal_slices(sender_address(), owner_address));
+        
+        slice to_address = cs_body~load_msg_addr();
+        int amount = cs_body~load_coins();
+        
+        throw_unless(402, amount <= my_balance);
+        
+        var msg = begin_cell()
+            .store_uint(0x18, 6) ;; external message
+            .store_slice(to_address)
+            .store_coins(amount)
+            .store_uint(0, 1 + 4 + 4 + 64 + 32 + 1 + 1)
+            .end_cell();
+        
+        send_raw_message(msg, 3); ;; pay gas separately, ignore errors
+    }
+}
+
+;; Get contract owner
+slice get_owner() method_id {
+    return owner_address;
+}
+
+;; Get total received TON
+int get_total_received() method_id {
+    return total_received;
+}
+
+;; Get contract balance
+int get_balance() method_id {
+    return my_balance();
+}
+
+;; Get pending withdrawals count
+int get_pending_withdrawals_count() method_id {
+    return pending_withdrawals.slice_refs_count();
+}
+
+;; Get pending withdrawal by index
+cell get_pending_withdrawal(int index) method_id {
+    return pending_withdrawals~load_ref(index);
+}
+
+;; Change owner (only current owner)
+() change_owner(slice new_owner) impure method_id {
+    throw_unless(401, equal_slices(sender_address(), owner_address));
+    owner_address = new_owner;
+}

@@ -1,0 +1,1 @@
+CREATE TABLE daily_missions (id SERIAL PRIMARY KEY, title VARCHAR(255), description TEXT, mission_type VARCHAR(50), target_value INTEGER, reward_amount BIGINT, is_active BOOLEAN DEFAULT TRUE, valid_until TIMESTAMP); 

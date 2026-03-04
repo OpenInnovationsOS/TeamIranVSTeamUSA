@@ -1,0 +1,1 @@
+CREATE TABLE users (id SERIAL PRIMARY KEY, telegram_id BIGINT UNIQUE, username VARCHAR(255), faction VARCHAR(50), stg_balance BIGINT DEFAULT 0, experience INTEGER DEFAULT 0, level INTEGER DEFAULT 1, referral_code VARCHAR(50) UNIQUE, referred_by VARCHAR(50), created_at TIMESTAMP DEFAULT NOW()); 

@@ -1,0 +1,1 @@
+CREATE TABLE user_events (id SERIAL PRIMARY KEY, user_id INTEGER REFERENCES users(id), event_id INTEGER REFERENCES game_events(id), participation_data JSONB, rewards_claimed BOOLEAN DEFAULT FALSE, created_at TIMESTAMP DEFAULT NOW()); 

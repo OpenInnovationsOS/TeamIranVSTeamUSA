@@ -1,0 +1,1 @@
+CREATE TABLE user_missions (id SERIAL PRIMARY KEY, user_id INTEGER REFERENCES users(id), mission_id INTEGER REFERENCES daily_missions(id), progress INTEGER DEFAULT 0, is_completed BOOLEAN DEFAULT FALSE, completed_at TIMESTAMP, created_at TIMESTAMP DEFAULT NOW()); 
