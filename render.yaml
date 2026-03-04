@@ -1,0 +1,46 @@
+services:
+  # Web Service for the Telegram Game API
+  - type: web
+    name: team-iran-vs-usa-api
+    env: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: MONGODB_URI
+        sync: false
+      - key: REDIS_URL
+        sync: false
+      - key: TELEGRAM_BOT_TOKEN
+        sync: false
+      - key: TON_API_KEY
+        sync: false
+      - key: JWT_SECRET
+        sync: false
+      - key: RATE_LIMIT_WINDOW_MS
+        value: 900000
+      - key: RATE_LIMIT_MAX_REQUESTS
+        value: 100
+    
+  # PostgreSQL Database (if needed)
+  - type: pserv
+    name: team-iran-vs-usa-db
+    env: postgres
+    plan: free
+    envVars:
+      - key: POSTGRES_DB
+        value: teamiranvsteamusa
+      - key: POSTGRES_USER
+        value: postgres
+      - key: POSTGRES_PASSWORD
+        generateValue: true
+        
+  # Redis for caching
+  - type: redis
+    name: team-iran-vs-usa-redis
+    plan: free
+    ipAllowList: []
