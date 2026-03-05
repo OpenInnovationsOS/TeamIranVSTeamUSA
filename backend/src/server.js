@@ -14,6 +14,7 @@ const userRoutes = require('./routes/users');
 const battleRoutes = require('./routes/battles');
 const monetizationRoutes = require('./routes/monetization');
 const adminRoutes = require('./routes/admin');
+const adminMonetizationRoutes = require('./routes/admin-monetization');
 
 // Import database connection
 const connectDB = require('./config/database');
@@ -58,6 +59,7 @@ app.use('/api/users', userRoutes);
 app.use('/api/battles', battleRoutes);
 app.use('/api/monetization', monetizationRoutes);
 app.use('/api/admin', adminRoutes);
+app.use('/api/admin', adminMonetizationRoutes);
 
 // WebSocket server
 const server = require('http').createServer(app);
