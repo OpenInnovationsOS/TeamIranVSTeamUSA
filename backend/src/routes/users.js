@@ -49,8 +49,11 @@ const authenticateToken = (req, res, next) => {
 // POST /api/users/register - Register new user
 router.post('/register', async (req, res) => {
   try {
+    console.log('Registration request received:', req.body);
+    
     const { error, value } = createUserSchema.validate(req.body);
     if (error) {
+      console.log('Validation error:', error.details);
       return res.status(400).json({
         success: false,
         error: {
@@ -67,6 +70,7 @@ router.post('/register', async (req, res) => {
     // Check if user already exists
     const existingUser = await User.findOne({ telegram_id: value.telegram_id });
     if (existingUser) {
+      console.log('User already exists:', value.telegram_id);
       return res.status(409).json({
         success: false,
         error: {
@@ -79,6 +83,7 @@ router.post('/register', async (req, res) => {
     // Create new user
     const user = new User(value);
     await user.save();
+    console.log('User created successfully:', user._id);
 
     // Generate JWT token
     const token = jwt.sign(
@@ -91,6 +96,8 @@ router.post('/register', async (req, res) => {
       { expiresIn: process.env.JWT_EXPIRES_IN || '7d' }
     );
 
+    console.log('JWT token generated successfully');
+    
     res.status(201).json({
       success: true,
       message: 'User registered successfully',
@@ -114,7 +121,8 @@ router.post('/register', async (req, res) => {
       success: false,
       error: {
         code: 'INTERNAL_ERROR',
-        message: 'Internal server error'
+        message: 'Internal server error',
+        details: error.message
       }
     });
   }
