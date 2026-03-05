@@ -1,0 +1,46 @@
+[build]
+builder = "NIXPACKS"
+
+[deploy]
+healthcheckPath = "/health"
+healthcheckTimeout = 100
+restartPolicyType = "ON_FAILURE"
+restartPolicyMaxRetries = 10
+
+[env]
+NODE_ENV = "production"
+PORT = "${{PORT}}"
+MONGODB_URI = "${{MONGODB_URI}}"
+SUPABASE_URL = "${{SUPABASE_URL}}"
+SUPABASE_ANON_KEY = "${{SUPABASE_ANON_KEY}}"
+SUPABASE_SERVICE_ROLE_KEY = "${{SUPABASE_SERVICE_ROLE_KEY}}"
+TON_ADMIN_WALLET = "${{TON_ADMIN_WALLET}}"
+STG_TOKENS_WALLET = "${{STG_TOKENS_WALLET}}"
+PREMIUM_FEATURES_WALLET = "${{PREMIUM_FEATURES_WALLET}}"
+TON_API_KEY = "${{TON_API_KEY}}"
+TON_API_ENDPOINT = "https://toncenter.com/api/v2/jsonRPC"
+JWT_SECRET = "${{JWT_SECRET}}"
+JWT_EXPIRES_IN = "7d"
+TELEGRAM_BOT_TOKEN = "${{TELEGRAM_BOT_TOKEN}}"
+TELEGRAM_WEBHOOK_URL = "${{TELEGRAM_WEBHOOK_URL}}"
+RATE_LIMIT_WINDOW_MS = "900000"
+RATE_LIMIT_MAX_REQUESTS = "100"
+
+# Service configurations
+[[services]]
+name = "backend"
+source = "./backend"
+healthcheckPath = "/health"
+healthcheckTimeout = 100
+
+[[services]]
+name = "frontend"
+source = "./frontend"
+healthcheckPath = "/"
+healthcheckTimeout = 100
+
+[[services]]
+name = "admin-dashboard"
+source = "./admin-dashboard"
+healthcheckPath = "/"
+healthcheckTimeout = 100
