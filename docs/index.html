@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Team Iran vs USA - Documentation Library</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #667eea;
+            --secondary-color: #764ba2;
+            --accent-color: #f093fb;
+            --text-color: #2d3748;
+            --bg-color: #f7fafc;
+            --card-bg: #ffffff;
+            --border-color: #e2e8f0;
+            --success-color: #48bb78;
+            --warning-color: #ed8936;
+            --error-color: #f56565;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            min-height: 100vh;
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            padding: 40px 0;
+            color: white;
+            position: relative;
+        }
+
+        header h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .stats-bar {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 30px 0;
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .stat-item {
+            text-align: center;
+            color: white;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .search-section {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .search-container {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 15px 50px 15px 20px;
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .search-icon {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--primary-color);
+        }
+
+        .filter-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 8px 16px;
+            border: 2px solid var(--border-color);
+            background: white;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .filter-btn:hover {
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        .filter-btn.active {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        .documents-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .document-card {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .document-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+        }
+
+        .document-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+
+        .document-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+
+        .document-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--text-color);
+            margin-bottom: 5px;
+        }
+
+        .document-category {
+            display: inline-block;
+            padding: 4px 12px;
+            background: var(--primary-color);
+            color: white;
+            border-radius: 15px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .document-description {
+            color: #718096;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+
+        .document-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.85rem;
+            color: #a0aec0;
+        }
+
+        .document-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .btn-primary {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--secondary-color);
+            transform: translateY(-2px);
+        }
+
+        .btn-print {
+            background: var(--success-color);
+            color: white;
+        }
+
+        .btn-print:hover {
+            background: #38a169;
+            transform: translateY(-2px);
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 60px 20px;
+            color: white;
+        }
+
+        .no-results h3 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 40px 0;
+            color: white;
+            opacity: 0.8;
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2rem;
+            }
+            
+            .documents-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats-bar {
+                flex-direction: column;
+            }
+        }
+
+        @media print {
+            body {
+                background: white;
+            }
+            
+            header, .search-section, .footer {
+                display: none;
+            }
+            
+            .document-card {
+                break-inside: avoid;
+                box-shadow: none;
+                border: 1px solid #ddd;
+                margin-bottom: 20px;
+            }
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: white;
+        }
+
+        .spinner {
+            border: 3px solid rgba(255,255,255,0.3);
+            border-top: 3px solid white;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>📚 Documentation Library</h1>
+        <p>Team Iran vs USA - Complete Implementation Guides & Technical Documentation</p>
+    </header>
+
+    <div class="container">
+        <div class="stats-bar">
+            <div class="stat-item">
+                <span class="stat-number" id="total-docs">12</span>
+                <span class="stat-label">Total Documents</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number" id="total-size">250KB+</span>
+                <span class="stat-label">Documentation Size</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number">100%</span>
+                <span class="stat-label">Print Capability</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number">24/7</span>
+                <span class="stat-label">Access</span>
+            </div>
+        </div>
+
+        <div class="search-section">
+            <div class="search-container">
+                <input type="text" class="search-input" id="searchInput" placeholder="🔍 Search documents...">
+                <span class="search-icon">🔍</span>
+            </div>
+            <div class="filter-buttons">
+                <button class="filter-btn active" data-category="all">All Documents</button>
+                <button class="filter-btn" data-category="deployment">Deployment</button>
+                <button class="filter-btn" data-category="implementation">Implementation</button>
+                <button class="filter-btn" data-category="strategy">Strategy</button>
+                <button class="filter-btn" data-category="technical">Technical</button>
+                <button class="filter-btn" data-category="admin">Admin</button>
+            </div>
+        </div>
+
+        <div class="documents-grid" id="documentsGrid">
+            <div class="loading">
+                <div class="spinner"></div>
+                <p>Loading documentation...</p>
+            </div>
+        </div>
+
+        <div class="no-results" id="noResults" style="display: none;">
+            <h3>📭 No documents found</h3>
+            <p>Try adjusting your search or filters</p>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>&copy; 2024 Team Iran vs USA Game | Documentation Library v1.0</p>
+    </footer>
+
+    <script>
+        // Document data
+        const documents = [
+            {
+                title: "Complete Supabase Deployment Guide",
+                description: "Step-by-step instructions for deploying Mini-App, Backend & Super Admin Dashboard on Supabase with TON blockchain integration",
+                category: "deployment",
+                file: "SUPABASE-DEPLOYMENT-STEP-BY-STEP.md",
+                size: "45KB",
+                lastModified: "2024-03-04",
+                icon: "🚀"
+            },
+            {
+                title: "Zero-Budget Supabase Strategy",
+                description: "Comprehensive strategy for managing Supabase costs from zero budget with growth phases and monetization",
+                category: "strategy",
+                file: "ZERO-BUDGET-SUPABASE-STRATEGY.md",
+                size: "28KB",
+                lastModified: "2024-03-04",
+                icon: "💰"
+            },
+            {
+                title: "Smart Strategy Implementation",
+                description: "Technical implementation details of cost optimization, monetization, and revenue analytics systems",
+                category: "implementation",
+                file: "SMART-STRATEGY-IMPLEMENTATION.md",
+                size: "32KB",
+                lastModified: "2024-03-04",
+                icon: "🧠"
+            },
+            {
+                title: "Super Admin Monetization Guide",
+                description: "Complete guide for managing STG token packs and premium features pricing through admin dashboard",
+                category: "admin",
+                file: "SUPER-ADMIN-MONETIZATION-GUIDE.md",
+                size: "25KB",
+                lastModified: "2024-03-04",
+                icon: "🎛️"
+            },
+            {
+                title: "Deep Implementation Analysis",
+                description: "Detailed breakdown of revenue streams, smart analytics, and automated management systems",
+                category: "technical",
+                file: "DEEP-IMPLEMENTATION-ANALYSIS.md",
+                size: "18KB",
+                lastModified: "2024-03-04",
+                icon: "📊"
+            },
+            {
+                title: "TON Blockchain Integration",
+                description: "Complete TON wallet setup, payment processing, and blockchain analytics for game monetization",
+                category: "technical",
+                file: "TON-BLOCKCHAIN-INTEGRATION.md",
+                size: "22KB",
+                lastModified: "2024-03-04",
+                icon: "⛓️"
+            },
+            {
+                title: "Payment Analytics System",
+                description: "Real-time payment tracking, revenue analytics, and wallet management for STG tokens and premium features",
+                category: "admin",
+                file: "PAYMENT-ANALYTICS-SYSTEM.md",
+                size: "20KB",
+                lastModified: "2024-03-04",
+                icon: "💳"
+            },
+            {
+                title: "Vercel Deployment Alternative",
+                description: "Alternative deployment guide using Vercel for serverless hosting with global CDN",
+                category: "deployment",
+                file: "VERCEL-DEPLOYMENT-GUIDE.md",
+                size: "15KB",
+                lastModified: "2024-03-04",
+                icon: "🌐"
+            },
+            {
+                title: "Admin Dashboard Features",
+                description: "Complete feature list and usage guide for the Super Admin Dashboard with real-time management",
+                category: "admin",
+                file: "ADMIN-DASHBOARD-FEATURES.md",
+                size: "18KB",
+                lastModified: "2024-03-04",
+                icon: "📱"
+            },
+            {
+                title: "Game Architecture Overview",
+                description: "Technical architecture documentation for the game backend, frontend, and database structure",
+                category: "technical",
+                file: "GAME-ARCHITECTURE.md",
+                size: "24KB",
+                lastModified: "2024-03-04",
+                icon: "🏗️"
+            },
+            {
+                title: "Monetization Strategy",
+                description: "Complete monetization strategy including token economics, premium features, and revenue optimization",
+                category: "strategy",
+                file: "MONETIZATION-STRATEGY.md",
+                size: "21KB",
+                lastModified: "2024-03-04",
+                icon: "💎"
+            },
+            {
+                title: "API Documentation",
+                description: "Complete API reference for all game endpoints, admin functions, and payment processing",
+                category: "technical",
+                file: "API-DOCUMENTATION.md",
+                size: "35KB",
+                lastModified: "2024-03-04",
+                icon: "🔌"
+            }
+        ];
+
+        // Initialize
+        let currentFilter = 'all';
+        let searchTerm = '';
+
+        // Render documents
+        function renderDocuments() {
+            const grid = document.getElementById('documentsGrid');
+            const noResults = document.getElementById('noResults');
+            
+            let filteredDocs = documents.filter(doc => {
+                const matchesCategory = currentFilter === 'all' || doc.category === currentFilter;
+                const matchesSearch = doc.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                                    doc.description.toLowerCase().includes(searchTerm.toLowerCase());
+                return matchesCategory && matchesSearch;
+            });
+
+            if (filteredDocs.length === 0) {
+                grid.style.display = 'none';
+                noResults.style.display = 'block';
+                return;
+            }
+
+            grid.style.display = 'grid';
+            noResults.style.display = 'none';
+
+            grid.innerHTML = filteredDocs.map(doc => `
+                <div class="document-card">
+                    <div class="document-header">
+                        <div>
+                            <div class="document-title">${doc.icon} ${doc.title}</div>
+                            <span class="document-category">${doc.category}</span>
+                        </div>
+                    </div>
+                    <div class="document-description">${doc.description}</div>
+                    <div class="document-meta">
+                        <span>${doc.size} • ${doc.lastModified}</span>
+                        <div class="document-actions">
+                            <a href="${doc.file}" class="btn btn-primary" target="_blank">
+                                📖 View
+                            </a>
+                            <button class="btn btn-print" onclick="printDocument('${doc.file}')">
+                                🖨 Print
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Search functionality
+        document.getElementById('searchInput').addEventListener('input', (e) => {
+            searchTerm = e.target.value;
+            renderDocuments();
+        });
+
+        // Filter functionality
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                currentFilter = btn.dataset.category;
+                renderDocuments();
+            });
+        });
+
+        // Print functionality
+        function printDocument(filename) {
+            // Create a new window for printing
+            const printWindow = window.open(filename, '_blank');
+            printWindow.onload = function() {
+                printWindow.print();
+            };
+        }
+
+        // Initialize on load
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                renderDocuments();
+            }, 1000);
+        });
+
+        // Update stats
+        document.getElementById('total-docs').textContent = documents.length;
+        
+        const totalSize = documents.reduce((sum, doc) => {
+            const size = parseInt(doc.size.replace('KB', ''));
+            return sum + size;
+        }, 0);
+        document.getElementById('total-size').textContent = `${totalSize}KB+`;
+    </script>
+</body>
+</html>
