@@ -70,17 +70,23 @@ const addTokenPackSchema = Joi.object({
 
 // Product definitions (same as in monetization route)
 const TOKEN_PACKS = {
-  'stg_1k': { name: '1,000 STG Tokens', amount: 1000, price: 1.99, bonus: 0 },
-  'stg_5k': { name: '5,000 STG Tokens', amount: 5000, price: 5.99, bonus: 500 },
-  'stg_10k': { name: '10,000 STG Tokens', amount: 10000, price: 10.99, bonus: 1500 },
-  'stg_50k': { name: '50,000 STG Tokens', amount: 50000, price: 29.99, bonus: 10000 }
+  'stg_1k': { name: '1,000 STG Tokens', amount: 1000, price: 1.99, bonus: 0, category: 'STG_TOKEN_PACKS', wallet: process.env.STG_TOKENS_WALLET },
+  'stg_5k': { name: '5,000 STG Tokens', amount: 5000, price: 5.99, bonus: 500, category: 'STG_TOKEN_PACKS', wallet: process.env.STG_TOKENS_WALLET },
+  'stg_10k': { name: '10,000 STG Tokens', amount: 10000, price: 10.99, bonus: 1500, category: 'STG_TOKEN_PACKS', wallet: process.env.STG_TOKENS_WALLET },
+  'stg_50k': { name: '50,000 STG Tokens', amount: 50000, price: 29.99, bonus: 10000, category: 'STG_TOKEN_PACKS', wallet: process.env.STG_TOKENS_WALLET }
 };
 
 const PREMIUM_FEATURES = {
-  'energy_boost': { name: 'Energy Boost', description: '2x energy regeneration', monthly: 2.00 },
-  'custom_avatar': { name: 'Custom Avatar', description: 'Exclusive avatars and skins', monthly: 5.00 },
-  'battle_analytics': { name: 'Battle Analytics', description: 'Advanced battle statistics', monthly: 3.00 },
-  'vip_chat': { name: 'VIP Chat', description: 'Priority support and chat features', monthly: 4.00 }
+  'custom_avatar': { name: 'Custom Avatar', description: 'Exclusive avatars and skins', monthly: 5.00, category: 'PREMIUM_FEATURES', wallet: process.env.PREMIUM_FEATURES_WALLET },
+  'battle_analytics': { name: 'Battle Analytics', description: 'Advanced battle statistics', monthly: 3.00, category: 'PREMIUM_FEATURES', wallet: process.env.PREMIUM_FEATURES_WALLET },
+  'vip_chat': { name: 'VIP Chat', description: 'Priority support and chat features', monthly: 4.00, category: 'PREMIUM_FEATURES', wallet: process.env.PREMIUM_FEATURES_WALLET }
+};
+
+const ENERGY_BOOST_PACKS = {
+  'energy_10': { name: '10 Energy Boosts', amount: 10, price: 2.99, bonus: 0, category: 'ENERGY_BOOSTS', wallet: process.env.PREMIUM_FEATURES_WALLET },
+  'energy_25': { name: '25 Energy Boosts', amount: 25, price: 6.99, bonus: 3, category: 'ENERGY_BOOSTS', wallet: process.env.PREMIUM_FEATURES_WALLET },
+  'energy_50': { name: '50 Energy Boosts', amount: 50, price: 12.99, bonus: 8, category: 'ENERGY_BOOSTS', wallet: process.env.PREMIUM_FEATURES_WALLET },
+  'energy_100': { name: '100 Energy Boosts', amount: 100, price: 24.99, bonus: 20, category: 'ENERGY_BOOSTS', wallet: process.env.PREMIUM_FEATURES_WALLET }
 };
 
 // GET /api/admin/users - Get all users
@@ -169,15 +175,35 @@ router.get('/analytics', authenticateAdmin, async (req, res) => {
     const cutoff = new Date();
     cutoff.setDate(cutoff.getDate() - timeframeNum);
 
-    // Get all analytics data in parallel
-    const [
-      userStats,
-      paymentAnalytics,
-      battleStats,
-      topProducts,
-      activeUsers
-    ] = await Promise.all([
-      // User statistics
+    // Get category-specific analytics
+    const categoryAnalytics = await Payment.aggregate([
+      { $match: { created_at: { $gte: cutoff } } },
+      {
+        $group: {
+          _id: '$product_details.category',
+          total_revenue: { $sum: '$product_details.price_usd' },
+          transaction_count: { $sum: 1 },
+          average_amount: { $avg: '$product_details.price_usd' }
+        }
+      }
+    ]);
+
+    // Get wallet-specific analytics
+    const walletAnalytics = await Payment.aggregate([
+      { $match: { created_at: { $gte: cutoff } } },
+      {
+        $group: {
+          _id: '$product_details.wallet',
+          total_revenue: { $sum: '$product_details.price_usd' },
+          transaction_count: { $sum: 1 },
+          categories: {
+            $addToSet: '$product_details.category'
+          }
+        }
+      }
+    ]);
+
+    const [userStats, paymentAnalytics, battleStats, topProducts] = await Promise.all([
       User.aggregate([
         { $match: { is_banned: false } },
         {
@@ -196,17 +222,34 @@ router.get('/analytics', authenticateAdmin, async (req, res) => {
         }
       ]),
       
-      // Payment analytics
-      Payment.getPaymentAnalytics(timeframeNum),
+      Payment.aggregate([
+        { $match: { created_at: { $gte: cutoff } } },
+        {
+          $group: {
+            _id: null,
+            totalRevenue: { $sum: '$product_details.price_usd' },
+            totalTransactions: { $sum: 1 }
+          }
+        }
+      ]),
       
-      // Battle statistics
       Battle.getBattleStats(timeframeNum),
       
-      // Top products
-      Payment.getTopProducts(10),
-      
-      // Active users
-      User.getActiveUsers(24)
+      Payment.aggregate([
+        { $match: { status: 'completed' } },
+        {
+          $group: {
+            _id: '$product_details.product_id',
+            name: { $first: '$product_details.name' },
+            category: { $first: '$product_details.category' },
+            revenue: { $sum: '$product_details.price_usd' },
+            purchases: { $sum: 1 },
+            average_price: { $avg: '$product_details.price_usd' }
+          }
+        },
+        { $sort: { revenue: -1 } },
+        { $limit: 10 }
+      ])
     ]);
 
     // Calculate additional metrics
@@ -214,10 +257,10 @@ router.get('/analytics', authenticateAdmin, async (req, res) => {
       created_at: { $gte: cutoff }
     });
 
-    const totalRevenue = (paymentAnalytics[0]?.total_revenue || 0);
+    const totalRevenue = paymentAnalytics[0]?.totalRevenue || 0;
     const totalUsers = userStats[0]?.totalUsers || 0;
     const averageRevenuePerUser = totalUsers > 0 ? totalRevenue / totalUsers : 0;
-    const conversionRate = totalUsers > 0 ? (paymentAnalytics[0]?.total_transactions || 0) / totalUsers : 0;
+    const conversionRate = totalUsers > 0 ? (paymentAnalytics[0]?.totalTransactions || 0) / totalUsers : 0;
 
     res.json({
       success: true,
@@ -225,12 +268,13 @@ router.get('/analytics', authenticateAdmin, async (req, res) => {
         summary: {
           totalRevenue: totalRevenue,
           totalUsers: totalUsers,
-          activeUsers: activeUsers,
+          activeUsers: await User.getActiveUsers(24),
           newUsers: newUsers,
           averageRevenuePerUser: averageRevenuePerUser,
           conversionRate: conversionRate
         },
-        revenueByCategory: paymentAnalytics[0]?.breakdown || [],
+        categoryBreakdown: categoryAnalytics,
+        walletBreakdown: walletAnalytics,
         userMetrics: {
           totalByFaction: userStats[0]?.totalByFaction || [],
           averageLevel: userStats[0]?.averageLevel || 0,
@@ -271,6 +315,8 @@ router.get('/monetization/token-packs', authenticateAdmin, async (req, res) => {
       total_tokens: pack.amount + pack.bonus,
       value_per_token: pack.price / (pack.amount + pack.bonus),
       active: true,
+      category: pack.category,
+      wallet: pack.wallet,
       revenue: 0, // Calculate from actual payment data
       purchases: 0 // Calculate from actual payment data
     }));
@@ -453,6 +499,204 @@ router.delete('/monetization/token-packs/:packId', authenticateAdmin, async (req
   }
 });
 
+// GET /api/admin/monetization/energy-boosts - Get energy boost packs for management
+router.get('/monetization/energy-boosts', authenticateAdmin, async (req, res) => {
+  try {
+    const energyBoosts = Object.entries(ENERGY_BOOST_PACKS).map(([id, pack]) => ({
+      id,
+      name: pack.name,
+      amount: pack.amount,
+      price: pack.price,
+      bonus: pack.bonus,
+      total_boosts: pack.amount + pack.bonus,
+      value_per_boost: pack.price / (pack.amount + pack.bonus),
+      active: true,
+      category: pack.category,
+      wallet: pack.wallet,
+      revenue: 0, // Calculate from actual payment data
+      purchases: 0 // Calculate from actual payment data
+    }));
+
+    // Get actual revenue and purchase data
+    const revenueData = await Payment.aggregate([
+      { $match: { type: 'energy_boost_purchase', status: 'completed' } },
+      { $group: { _id: '$product_details.product_id', revenue: { $sum: '$product_details.price_usd' }, purchases: { $sum: 1 } } }
+    ]);
+
+    // Merge actual data
+    energyBoosts.forEach(pack => {
+      const actualData = revenueData.find(r => r._id === pack.id);
+      if (actualData) {
+        pack.revenue = actualData.revenue;
+        pack.purchases = actualData.purchases;
+      }
+    });
+
+    res.json({
+      success: true,
+      data: { energy_boosts: energyBoosts }
+    });
+  } catch (error) {
+    console.error('Get energy boosts error:', error);
+    res.status(500).json({
+      success: false,
+      error: {
+        code: 'INTERNAL_ERROR',
+        message: 'Internal server error'
+      }
+    });
+  }
+});
+
+// PUT /api/admin/monetization/energy-boosts/:packId - Update energy boost pack
+router.put('/monetization/energy-boosts/:packId', authenticateAdmin, async (req, res) => {
+  try {
+    const { error, value } = updateTokenPackSchema.validate(req.body);
+    if (error) {
+      return res.status(400).json({
+        success: false,
+        error: {
+          code: 'VALIDATION_ERROR',
+          message: 'Invalid input data',
+          details: error.details.map(detail => ({
+            field: detail.path.join('.'),
+            message: detail.message
+          }))
+        }
+      });
+    }
+
+    const packId = req.params.packId;
+    if (!ENERGY_BOOST_PACKS[packId]) {
+      return res.status(404).json({
+        success: false,
+        error: {
+          code: 'NOT_FOUND',
+          message: 'Energy boost pack not found'
+        }
+      });
+    }
+
+    // Update energy boost pack (in production, save to database)
+    ENERGY_BOOST_PACKS[packId] = { ...ENERGY_BOOST_PACKS[packId], ...value };
+
+    res.json({
+      success: true,
+      message: 'Energy boost pack updated successfully',
+      data: {
+        pack: {
+          id: packId,
+          name: ENERGY_BOOST_PACKS[packId].name,
+          amount: ENERGY_BOOST_PACKS[packId].amount,
+          price: ENERGY_BOOST_PACKS[packId].price,
+          bonus: ENERGY_BOOST_PACKS[packId].bonus,
+          active: ENERGY_BOOST_PACKS[packId].active
+        }
+      }
+    });
+  } catch (error) {
+    console.error('Update energy boost pack error:', error);
+    res.status(500).json({
+      success: false,
+      error: {
+        code: 'INTERNAL_ERROR',
+        message: 'Internal server error'
+      }
+    });
+  }
+});
+
+// POST /api/admin/monetization/energy-boosts - Add new energy boost pack
+router.post('/monetization/energy-boosts', authenticateAdmin, async (req, res) => {
+  try {
+    const { error, value } = addTokenPackSchema.validate(req.body);
+    if (error) {
+      return res.status(400).json({
+        success: false,
+        error: {
+          code: 'VALIDATION_ERROR',
+          message: 'Invalid input data',
+          details: error.details.map(detail => ({
+            field: detail.path.join('.'),
+            message: detail.message
+          }))
+        }
+      });
+    }
+
+    // Generate new pack ID
+    const packId = `energy_${value.amount}`;
+    
+    // Add new energy boost pack (in production, save to database)
+    ENERGY_BOOST_PACKS[packId] = {
+      name: `${value.amount} Energy Boosts`,
+      amount: value.amount,
+      price: value.price,
+      bonus: value.bonus,
+      active: value.active,
+      category: 'ENERGY_BOOSTS',
+      wallet: process.env.PREMIUM_FEATURES_WALLET
+    };
+
+    res.status(201).json({
+      success: true,
+      message: 'Energy boost pack added successfully',
+      data: {
+        pack: {
+          id: packId,
+          name: ENERGY_BOOST_PACKS[packId].name,
+          amount: value.amount,
+          price: value.price,
+          bonus: value.bonus,
+          active: value.active
+        }
+      }
+    });
+  } catch (error) {
+    console.error('Add energy boost pack error:', error);
+    res.status(500).json({
+      success: false,
+      error: {
+        code: 'INTERNAL_ERROR',
+        message: 'Internal server error'
+      }
+    });
+  }
+});
+
+// DELETE /api/admin/monetization/energy-boosts/:packId - Delete energy boost pack
+router.delete('/monetization/energy-boosts/:packId', authenticateAdmin, async (req, res) => {
+  try {
+    const packId = req.params.packId;
+    if (!ENERGY_BOOST_PACKS[packId]) {
+      return res.status(404).json({
+        success: false,
+        error: {
+          code: 'NOT_FOUND',
+          message: 'Energy boost pack not found'
+        }
+      });
+    }
+
+    // Delete energy boost pack (in production, remove from database)
+    delete ENERGY_BOOST_PACKS[packId];
+
+    res.json({
+      success: true,
+      message: 'Energy boost pack deleted successfully'
+    });
+  } catch (error) {
+    console.error('Delete energy boost pack error:', error);
+    res.status(500).json({
+      success: false,
+      error: {
+        code: 'INTERNAL_ERROR',
+        message: 'Internal server error'
+      }
+    });
+  }
+});
+
 // GET /api/admin/monetization/premium-features - Get premium features for management
 router.get('/monetization/premium-features', authenticateAdmin, async (req, res) => {
   try {
@@ -462,6 +706,8 @@ router.get('/monetization/premium-features', authenticateAdmin, async (req, res)
       description: feature.description,
       monthly: feature.monthly,
       active: true,
+      category: feature.category,
+      wallet: feature.wallet,
       subscribers: 0, // Calculate from actual user data
       revenue: 0, // Calculate from actual payment data
       churn_rate: 0 // Calculate from actual subscription data

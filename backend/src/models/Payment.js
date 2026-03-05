@@ -15,7 +15,7 @@ const paymentSchema = new mongoose.Schema({
   },
   type: { 
     type: String, 
-    enum: ['token_purchase', 'premium_subscription', 'battle_fee', 'marketplace_commission'], 
+    enum: ['token_purchase', 'energy_boost_purchase', 'premium_subscription', 'battle_fee', 'marketplace_commission'], 
     required: true 
   },
   product_details: {
@@ -24,7 +24,9 @@ const paymentSchema = new mongoose.Schema({
     amount: { type: Number, required: true },
     bonus: { type: Number, default: 0 },
     price_usd: { type: Number, required: true },
-    currency: { type: String, default: 'USD' }
+    currency: { type: String, default: 'USD' },
+    category: { type: String, required: true },
+    wallet: { type: String, required: true }
   },
   payment_method: { 
     type: String, 

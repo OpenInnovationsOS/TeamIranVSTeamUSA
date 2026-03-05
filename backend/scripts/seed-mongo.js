@@ -277,11 +277,12 @@ const seedPayments = async (users) => {
     console.log('🗑️ Cleared existing payments');
 
     const payments = [];
-    const paymentTypes = ['token_purchase', 'premium_subscription', 'battle_fee'];
+    const paymentTypes = ['token_purchase', 'energy_boost_purchase', 'premium_subscription', 'battle_fee'];
     const paymentMethods = ['ton', 'stripe', 'coinbase'];
     const statuses = ['completed', 'pending', 'failed'];
     const tokenPacks = ['stg_1k', 'stg_5k', 'stg_10k', 'stg_50k'];
     const premiumFeatures = ['energy_boost', 'custom_avatar', 'battle_analytics', 'vip_chat'];
+    const energyBoostPacks = ['energy_10', 'energy_25', 'energy_50', 'energy_100'];
 
     const tokenPackDetails = {
       'stg_1k': { name: '1,000 STG Tokens', amount: 1000, price: 1.99, bonus: 0 },
@@ -298,6 +299,13 @@ const seedPayments = async (users) => {
     };
 
     const numPayments = 200;
+
+    const energyBoostPackDetails = {
+      'energy_10': { name: '10 Energy Boosts', amount: 10, price: 2.99, bonus: 0 },
+      'energy_25': { name: '25 Energy Boosts', amount: 25, price: 6.99, bonus: 3 },
+      'energy_50': { name: '50 Energy Boosts', amount: 50, price: 12.99, bonus: 8 },
+      'energy_100': { name: '100 Energy Boosts', amount: 100, price: 24.99, bonus: 20 }
+    };
 
     for (let i = 0; i < numPayments; i++) {
       const user = users[Math.floor(Math.random() * users.length)];
@@ -316,7 +324,22 @@ const seedPayments = async (users) => {
           amount: pack.amount,
           bonus: pack.bonus,
           price_usd: pack.price,
-          currency: 'USD'
+          currency: 'USD',
+          category: 'STG_TOKEN_PACKS',
+          wallet: process.env.STG_TOKENS_WALLET || '0:stg_tokens_wallet'
+        };
+      } else if (paymentType === 'energy_boost_purchase') {
+        const packId = energyBoostPacks[Math.floor(Math.random() * energyBoostPacks.length)];
+        const pack = energyBoostPackDetails[packId];
+        productDetails = {
+          product_id: packId,
+          name: pack.name,
+          amount: pack.amount,
+          bonus: pack.bonus,
+          price_usd: pack.price,
+          currency: 'USD',
+          category: 'ENERGY_BOOSTS',
+          wallet: process.env.PREMIUM_FEATURES_WALLET || '0:premium_features_wallet'
         };
       } else if (paymentType === 'premium_subscription') {
         const featureId = premiumFeatures[Math.floor(Math.random() * premiumFeatures.length)];
@@ -327,7 +350,9 @@ const seedPayments = async (users) => {
           amount: 0,
           bonus: 0,
           price_usd: feature.monthly,
-          currency: 'USD'
+          currency: 'USD',
+          category: 'PREMIUM_FEATURES',
+          wallet: process.env.PREMIUM_FEATURES_WALLET || '0:premium_features_wallet'
         };
       } else if (paymentType === 'battle_fee') {
         productDetails = {
@@ -336,7 +361,9 @@ const seedPayments = async (users) => {
           amount: 0,
           bonus: 0,
           price_usd: Math.floor(Math.random() * 50) + 1,
-          currency: 'USD'
+          currency: 'USD',
+          category: 'BATTLE_FEES',
+          wallet: process.env.TON_ADMIN_WALLET || '0:admin_wallet'
         };
       }
 
@@ -350,7 +377,7 @@ const seedPayments = async (users) => {
         payment_method: paymentMethod,
         blockchain: {
           transaction_hash: `0x${Math.random().toString(16).substr(2, 64)}`,
-          wallet_address: `0:${Math.random().toString(16).substr(2, 64)}`,
+          wallet_address: productDetails.wallet,
           gas_used: Math.floor(Math.random() * 50000) + 21000,
           gas_price: (Math.random() * 0.001 + 0.000001).toString(),
           confirmation_count: Math.floor(Math.random() * 20) + 1
