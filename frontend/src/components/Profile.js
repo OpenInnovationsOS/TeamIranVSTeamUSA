@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import styled from 'styled-components';
 import toast from 'react-hot-toast';
@@ -71,6 +71,18 @@ const FactionBadge = styled.div`
     'linear-gradient(45deg, #002868, #001848)'
   };
   color: #ffffff;
+`;
+
+const ProfileBadge = styled.div`
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: bold;
+  margin-top: 8px;
+  background: linear-gradient(45deg, #ffd700, #ffed4e);
+  color: #333;
+  box-shadow: 0 2px 8px rgba(255, 215, 0, 0.3);
 `;
 
 const StatsGrid = styled.div`
@@ -159,12 +171,19 @@ const ConnectButton = styled(motion.button)`
   width: 100%;
 `;
 
+const ActionSection = styled.div`
+  margin-top: 20px;
+  padding: 16px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+`;
+
 const Profile = () => {
   const { user, updateUser } = useAuthStore();
-  const { hapticFeedback, shareScore } = useTelegram();
+  const { hapticFeedback } = useTelegram();
   const [referrals, setReferrals] = useState([]);
   const [isConnectingWallet, setIsConnectingWallet] = useState(false);
-  const [achievements, setAchievements] = useState([]);
   const [referralCode, setReferralCode] = useState('');
 
   // Fallback user data
@@ -186,95 +205,58 @@ const Profile = () => {
     wallet_address: null
   };
 
-  useEffect(() => {
-    loadProfileData();
-  }, []);
-
-  const loadProfileData = async () => {
+  const loadProfileData = useCallback(async () => {
     try {
-      // Load profile data
-      const profileResponse = await fetch('http://localhost:3001/api/profile', {
+      const response = await fetch('http://localhost:3001/api/user/profile', {
         headers: {
-          'Authorization': `Bearer ${localStorage.getItem('auth_token')}`
+          'Authorization': `Bearer ${localStorage.getItem('auth_token')}`,
+          'x-user-id': user?.id || 'player123'
         }
       });
-
-      if (profileResponse.ok) {
-        const profileData = await profileResponse.json();
-        if (profileData.success) {
-          updateUser(profileData.data);
-        }
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
-
-      // Load achievements
-      const achievementsResponse = await fetch('http://localhost:3001/api/achievements', {
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('auth_token')}`
-        }
-      });
-
-      if (achievementsResponse.ok) {
-        const achievementsData = await achievementsResponse.json();
-        setAchievements(achievementsData.achievements || []);
-      }
-
-      // Generate referral code if not exists
-      if (!safeUser.referral_code) {
-        generateReferralCode();
+      
+      const data = await response.json();
+      if (data.success) {
+        setReferrals(data.referrals || []);
+        setReferralCode(data.referral_code || '');
       }
     } catch (error) {
       console.error('Failed to load profile data:', error);
-      // Set fallback data
-      setReferralCode(safeUser.referral_code);
+      // Fallback data
       setReferrals([
-        {
-          id: 2,
-          username: 'player2',
-          first_name: 'Player Two',
-          created_at: '2024-01-15T10:30:00Z',
-          stg_balance: 500,
-          level: 3
-        }
+        { id: 1, username: 'Friend1', first_name: 'Alex', created_at: '2024-01-15T10:00:00Z', stg_balance: 5000, level: 5 },
+        { id: 2, username: 'Friend2', first_name: 'Sarah', created_at: '2024-01-16T14:30:00Z', stg_balance: 3000, level: 3 }
       ]);
-      setAchievements([
-        { id: 1, title: 'First Victory', description: 'Win your first battle', completed: true, reward: 100, rarity: 'common' },
-        { id: 2, title: 'Battle Master', description: 'Win 10 battles', completed: false, reward: 500, rarity: 'rare' },
-        { id: 3, title: 'STG Collector', description: 'Earn 1000 STG', completed: true, reward: 200, rarity: 'common' }
-      ]);
+      setReferralCode('TEAMIRAN');
     }
-  };
+  }, [user?.id]);
 
-  const generateReferralCode = async () => {
-    try {
-      const response = await fetch('http://localhost:3001/api/referral/create', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('auth_token')}`
-        }
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        if (data.success) {
-          setReferralCode(data.referral_code);
-          updateUser({ referral_code: data.referral_code });
-        }
-      }
-    } catch (error) {
-      console.error('Failed to generate referral code:', error);
-      // Fallback referral code
-      const fallbackCode = `PLAYER${Math.floor(Math.random() * 100000)}`;
-      setReferralCode(fallbackCode);
-      updateUser({ referral_code: fallbackCode });
-    }
-  };
+  useEffect(() => {
+    loadProfileData();
+  }, [loadProfileData]);
 
   const shareReferralCode = () => {
     const referralText = `🎮 Join Team ${safeUser.faction === 'iran' ? 'Iran 🇮🇷' : 'USA 🇺🇸'}! Use my referral code: ${referralCode || safeUser.referral_code}\n\nPlay now: ${window.location.href}`;
-    const telegramUrl = `https://t.me/share/url?url=${encodeURIComponent(window.location.href)}&text=${encodeURIComponent(referralText)}`;
     
-    window.open(telegramUrl, '_blank');
+    // Use the enhanced share functionality
+    if (window.Telegram?.WebApp?.openTelegramLink) {
+      const telegramUrl = `https://t.me/share/url?url=${encodeURIComponent(window.location.href)}&text=${encodeURIComponent(referralText)}`;
+      window.Telegram.WebApp.openTelegramLink(telegramUrl);
+    } else if (navigator.share) {
+      navigator.share({
+        title: 'Join Team Iran vs USA!',
+        text: referralText,
+        url: window.location.href
+      }).catch(err => console.log('Web Share API failed:', err));
+    } else {
+      navigator.clipboard.writeText(`${referralText}\n${window.location.href}`).then(() => {
+        toast.success('Referral link copied to clipboard!');
+      }).catch(err => console.error('Failed to copy:', err));
+    }
+    
     hapticFeedback('success');
     toast.success('Referral link shared!');
   };
@@ -298,6 +280,29 @@ const Profile = () => {
     }
   };
 
+  const shareScore = () => {
+    const scoreText = `🎮 My Team ${safeUser.faction === 'iran' ? 'Iran 🇮🇷' : 'USA 🇺🇸'} Stats:\n\n🏆 Level: ${safeUser.level}\n💰 STG Balance: ${safeUser.stg_balance?.toLocaleString() || 0}\n⚔️ Battles Won: ${safeUser.wins || 0}\n📊 Win Rate: ${safeUser.win_rate ? (safeUser.win_rate * 100).toFixed(1) : 0}%\n\nJoin me in Team Iran vs USA! 🎯\n${window.location.href}`;
+    
+    // Use the enhanced share functionality
+    if (window.Telegram?.WebApp?.openTelegramLink) {
+      const telegramUrl = `https://t.me/share/url?url=${encodeURIComponent(window.location.href)}&text=${encodeURIComponent(scoreText)}`;
+      window.Telegram.WebApp.openTelegramLink(telegramUrl);
+    } else if (navigator.share) {
+      navigator.share({
+        title: 'My Team Iran vs USA Stats',
+        text: scoreText,
+        url: window.location.href
+      }).catch(err => console.log('Web Share API failed:', err));
+    } else {
+      navigator.clipboard.writeText(`${scoreText}\n${window.location.href}`).then(() => {
+        toast.success('Score copied to clipboard!');
+      }).catch(err => console.error('Failed to copy:', err));
+    }
+    
+    hapticFeedback('success');
+    toast.success('Score shared successfully!');
+  };
+
   return (
     <Container>
       <Title>👤 Profile</Title>
@@ -305,42 +310,68 @@ const Profile = () => {
       <ProfileCard>
         <ProfileHeader>
           <Avatar>
-            {user.faction === 'iran' ? '🇮🇷' : '🇺🇸'}
+            {safeUser.faction === 'iran' ? '🇮🇷' : '🇺🇸'}
           </Avatar>
           <ProfileInfo>
-            <Username>{user.first_name || user.username}</Username>
-            <FactionBadge faction={user.faction}>
-              {user.faction === 'iran' ? '🇮🇷 Team Iran' : '🇺🇸 Team USA'}
+            <Username>{safeUser.first_name || safeUser.username}</Username>
+            <FactionBadge faction={safeUser.faction}>
+              {safeUser.faction === 'iran' ? '🇮🇷 Team Iran' : '🇺🇸 Team USA'}
             </FactionBadge>
+            {/* Profile Badge Display */}
+            <ProfileBadge>
+              {safeUser.profileBadge || '🏆 Bronze'}
+            </ProfileBadge>
           </ProfileInfo>
         </ProfileHeader>
 
         <StatsGrid>
           <StatItem>
             <StatLabel>Level</StatLabel>
-            <StatValue>{user.level}</StatValue>
+            <StatValue>{safeUser.level}</StatValue>
           </StatItem>
           <StatItem>
             <StatLabel>Experience</StatLabel>
-            <StatValue>{user.experience}</StatValue>
+            <StatValue>{safeUser.experience?.toLocaleString() || 0}</StatValue>
           </StatItem>
           <StatItem>
             <StatLabel>STG Balance</StatLabel>
-            <StatValue>{user.stg_balance.toLocaleString()}</StatValue>
+            <StatValue>{safeUser.stg_balance?.toLocaleString() || 0}</StatValue>
           </StatItem>
           <StatItem>
-            <StatLabel>WIN Tokens</StatLabel>
-            <StatValue>{user.win_claimable.toLocaleString()}</StatValue>
+            <StatLabel>Battles</StatLabel>
+            <StatValue>{safeUser.battles || 0}</StatValue>
+          </StatItem>
+          <StatItem>
+            <StatLabel>Wins</StatLabel>
+            <StatValue>{safeUser.wins || 0}</StatValue>
+          </StatItem>
+          <StatItem>
+            <StatLabel>Losses</StatLabel>
+            <StatValue>{safeUser.losses || 0}</StatValue>
+          </StatItem>
+          <StatItem>
+            <StatLabel>Win Rate</StatLabel>
+            <StatValue>{safeUser.win_rate ? (safeUser.win_rate * 100).toFixed(1) : 0}%</StatValue>
           </StatItem>
         </StatsGrid>
       </ProfileCard>
+
+      <ActionSection>
+        <ShareButton
+          onClick={shareScore}
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
+        >
+          📊 Share My Score
+        </ShareButton>
+      </ActionSection>
 
       <ReferralSection>
         <h3 style={{ color: '#ffffff', marginBottom: '12px' }}>🎁 Referral Program</h3>
         <p style={{ color: 'rgba(255, 255, 255, 0.7)', fontSize: '14px', marginBottom: '12px' }}>
           Invite friends and earn 50 STG for each referral!
         </p>
-        <ReferralCode>{user.referral_code}</ReferralCode>
+        <ReferralCode>{safeUser.referral_code}</ReferralCode>
         <ShareButton
           onClick={shareReferralCode}
           whileHover={{ scale: 1.02 }}
@@ -372,12 +403,12 @@ const Profile = () => {
 
       <WalletSection>
         <h3 style={{ color: '#ffffff', marginBottom: '12px' }}>💎 TON Wallet</h3>
-        {user.ton_wallet_address ? (
+        {safeUser.ton_wallet_address ? (
           <>
             <p style={{ color: 'rgba(255, 255, 255, 0.7)', fontSize: '14px', marginBottom: '8px' }}>
               Connected wallet:
             </p>
-            <WalletAddress>{user.ton_wallet_address}</WalletAddress>
+            <WalletAddress>{safeUser.ton_wallet_address}</WalletAddress>
           </>
         ) : (
           <>

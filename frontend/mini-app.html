@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎮 Team Iran vs USA - Mini App</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        .app-container { 
+            max-width: 100%; 
+            margin: 0 auto; 
+            background: rgba(255,255,255,0.95); 
+            min-height: 100vh;
+        }
+        .header { 
+            background: linear-gradient(135deg, #e53e3e 0%, #3182ce 100%); 
+            padding: 15px; 
+            text-align: center; 
+            color: white;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        .header h1 { font-size: 1.8em; margin-bottom: 5px; }
+        .header p { opacity: 0.9; }
+        .nav-tabs { 
+            display: flex; 
+            background: rgba(255,255,255,0.1); 
+            padding: 10px; 
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .nav-tab { 
+            padding: 10px 15px; 
+            border: 2px solid rgba(255,255,255,0.3); 
+            border-radius: 20px; 
+            cursor: pointer; 
+            font-weight: 600;
+            transition: all 0.3s ease;
+            background: rgba(255,255,255,0.1);
+            color: white;
+            font-size: 0.9em;
+        }
+        .nav-tab.active { 
+            background: rgba(255,255,255,0.3); 
+            border-color: white;
+            transform: scale(1.05);
+        }
+        .nav-tab:hover { 
+            background: rgba(255,255,255,0.2); 
+            transform: scale(1.05);
+        }
+        .tab-content { display: none; padding: 20px; }
+        .tab-content.active { display: block; }
+        .stats-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); 
+            gap: 15px; 
+            margin-bottom: 20px; 
+        }
+        .stat-card { 
+            background: white; 
+            border-radius: 15px; 
+            padding: 20px; 
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+        .stat-card:hover { transform: translateY(-5px); }
+        .stat-value { font-size: 2em; font-weight: bold; color: #667eea; margin-bottom: 5px; }
+        .stat-label { color: #718096; font-size: 0.9em; }
+        .section { 
+            background: white; 
+            border-radius: 15px; 
+            padding: 20px; 
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .section h2 { color: #4a5568; margin-bottom: 15px; font-size: 1.3em; }
+        .weapon-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); 
+            gap: 15px; 
+            margin-bottom: 20px;
+        }
+        .weapon-card { 
+            background: linear-gradient(135deg, #f7fafc 0%, #e2e8f0 100%); 
+            border-radius: 10px; 
+            padding: 15px; 
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+        .weapon-card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.2); }
+        .weapon-card.iran { background: linear-gradient(135deg, #fed7d7 0%, #fc8181 100%); }
+        .weapon-card.usa { background: linear-gradient(135deg, #bee3f8 0%, #63b3ed 100%); }
+        .weapon-icon { font-size: 2em; margin-bottom: 8px; }
+        .weapon-name { font-weight: bold; color: #2d3748; margin-bottom: 5px; font-size: 0.9em; }
+        .weapon-rarity { 
+            padding: 3px 8px; 
+            border-radius: 10px; 
+            font-size: 0.7em; 
+            font-weight: 600;
+            color: white;
+        }
+        .rarity-common { background: #718096; }
+        .rarity-uncommon { background: #48bb78; }
+        .rarity-rare { background: #805ad5; }
+        .rarity-epic { background: #6366f1; }
+        .rarity-legendary { background: #f59e0b; }
+        .battle-arena { 
+            background: linear-gradient(135deg, #2d3748 0%, #1a202c 100%); 
+            border-radius: 15px; 
+            padding: 20px; 
+            color: white;
+            text-align: center;
+            min-height: 200px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .battle-players { 
+            display: flex; 
+            justify-content: space-around; 
+            align-items: center; 
+            margin: 20px 0;
+            width: 100%;
+        }
+        .player-card { 
+            background: rgba(255,255,255,0.1); 
+            border-radius: 10px; 
+            padding: 15px; 
+            text-align: center;
+            min-width: 120px;
+        }
+        .vs-text { 
+            font-size: 2em; 
+            font-weight: bold; 
+            color: #f59e0b;
+            text-shadow: 0 0 10px rgba(245, 158, 11, 0.5);
+        }
+        .btn { 
+            padding: 12px 24px; 
+            border: none; 
+            border-radius: 25px; 
+            cursor: pointer; 
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin: 5px;
+        }
+        .btn-primary { background: #667eea; color: white; }
+        .btn-success { background: #48bb78; color: white; }
+        .btn-danger { background: #f56565; color: white; }
+        .btn-warning { background: #f59e0b; color: white; }
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
+        .collectibles-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); 
+            gap: 10px; 
+            margin-bottom: 20px;
+        }
+        .collectible-item { 
+            background: white; 
+            border-radius: 10px; 
+            padding: 10px; 
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 2px solid #e2e8f0;
+        }
+        .collectible-item:hover { 
+            transform: translateY(-3px); 
+            border-color: #667eea;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        .collectible-item.owned { 
+            background: linear-gradient(135deg, #48bb78 0%, #38a169 100%); 
+            color: white;
+            border-color: #38a169;
+        }
+        .collectible-icon { font-size: 1.5em; margin-bottom: 5px; }
+        .collectible-name { font-size: 0.8em; font-weight: bold; }
+        .achievement-list { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 
+            gap: 15px; 
+        }
+        .achievement-item { 
+            background: white; 
+            border-radius: 10px; 
+            padding: 15px; 
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        .achievement-item.unlocked { 
+            background: linear-gradient(135deg, #48bb78 0%, #38a169 100%); 
+            color: white;
+        }
+        .achievement-icon { font-size: 2em; margin-bottom: 10px; }
+        .achievement-name { font-weight: bold; margin-bottom: 5px; }
+        .achievement-desc { font-size: 0.8em; opacity: 0.8; }
+        .shop-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); 
+            gap: 15px; 
+        }
+        .shop-item { 
+            background: white; 
+            border-radius: 10px; 
+            padding: 15px; 
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 2px solid #e2e8f0;
+        }
+        .shop-item:hover { 
+            transform: translateY(-3px); 
+            border-color: #f59e0b;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        .shop-icon { font-size: 2em; margin-bottom: 10px; }
+        .shop-name { font-weight: bold; margin-bottom: 5px; }
+        .shop-price { color: #f59e0b; font-weight: bold; }
+        .user-profile { 
+            background: white; 
+            border-radius: 15px; 
+            padding: 20px; 
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .user-avatar { 
+            width: 80px; 
+            height: 80px; 
+            border-radius: 50%; 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+            margin: 0 auto 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2em;
+            color: white;
+        }
+        .user-name { font-size: 1.5em; font-weight: bold; color: #2d3748; margin-bottom: 10px; }
+        .user-stats { 
+            display: grid; 
+            grid-template-columns: repeat(3, 1fr); 
+            gap: 10px; 
+            margin-top: 15px;
+        }
+        .user-stat { text-align: center; }
+        .user-stat-value { font-weight: bold; color: #667eea; }
+        .user-stat-label { font-size: 0.8em; color: #718096; }
+        .floating-weapon {
+            position: absolute;
+            font-size: 2em;
+            animation: float 3s ease-in-out infinite;
+            cursor: pointer;
+            z-index: 100;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        @keyframes slideUp {
+            from { transform: translateY(100vh); opacity: 0; }
+            to { transform: translateY(-100px); opacity: 1; }
+        }
+        .weapon-animation {
+            position: fixed;
+            font-size: 3em;
+            z-index: 1000;
+            pointer-events: none;
+            animation: slideUp 2s ease-out forwards;
+        }
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            z-index: 1001;
+            max-width: 300px;
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+        }
+        .notification.show { transform: translateX(0); }
+        .notification.success { border-left: 4px solid #48bb78; }
+        .notification.error { border-left: 4px solid #f56565; }
+        .notification.info { border-left: 4px solid #667eea; }
+        @media (max-width: 768px) {
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+            .weapon-grid { grid-template-columns: repeat(3, 1fr); }
+            .battle-players { flex-direction: column; gap: 20px; }
+            .user-stats { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <div class="header">
+            <h1>🎮 Team Iran vs USA</h1>
+            <p>Mobile Mini App Experience</p>
+            <div class="nav-tabs">
+                <button class="nav-tab active" onclick="showTab('home')">🏠 Home</button>
+                <button class="nav-tab" onclick="showTab('weapons')">🔫 Weapons</button>
+                <button class="nav-tab" onclick="showTab('battle')">⚔️ Battle</button>
+                <button class="nav-tab" onclick="showTab('collectibles')">🎁 Collectibles</button>
+                <button class="nav-tab" onclick="showTab('achievements')">🏆 Achievements</button>
+                <button class="nav-tab" onclick="showTab('shop')">🛍️ Shop</button>
+                <button class="nav-tab" onclick="showTab('profile')">👤 Profile</button>
+            </div>
+        </div>
+
+        <!-- Home Tab -->
+        <div id="home" class="tab-content active">
+            <div class="user-profile">
+                <div class="user-avatar">👤</div>
+                <div class="user-name">Player1</div>
+                <div class="user-stats">
+                    <div class="user-stat">
+                        <div class="user-stat-value">Level 25</div>
+                        <div class="user-stat-label">Level</div>
+                    </div>
+                    <div class="user-stat">
+                        <div class="user-stat-value">2,500</div>
+                        <div class="user-stat-label">STG Tokens</div>
+                    </div>
+                    <div class="user-stat">
+                        <div class="user-stat-value">78.9%</div>
+                        <div class="user-stat-label">Win Rate</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value">156</div>
+                    <div class="stat-label">Total Battles</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">45</div>
+                    <div class="stat-label">Weapons</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">23</div>
+                    <div class="stat-label">Achievements</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">🇮🇳</div>
+                    <div class="stat-label">Faction</div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>🎯 Quick Actions</h2>
+                <div style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;">
+                    <button class="btn btn-primary" onclick="startQuickBattle()">⚡ Quick Battle</button>
+                    <button class="btn btn-success" onclick="openWeapons()">🔫 Weapons</button>
+                    <button class="btn btn-warning" onclick="openShop()">🛍️ Shop</button>
+                    <button class="btn btn-danger" onclick="joinTournament()">🏆 Tournament</button>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>📊 Recent Activity</h2>
+                <div style="text-align: left; color: #718096;">
+                    <div style="padding: 10px; border-bottom: 1px solid #e2e8f0;">🏆 Won battle vs Player2 (5:23)</div>
+                    <div style="padding: 10px; border-bottom: 1px solid #e2e8f0;">🔫 Unlocked M4A1 Rifle</div>
+                    <div style="padding: 10px; border-bottom: 1px solid #e2e8f0;">🏅 Achievement: Sharpshooter</div>
+                    <div style="padding: 10px;">💰 Purchased 500 STG Tokens</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Weapons Tab -->
+        <div id="weapons" class="tab-content">
+            <div class="section">
+                <h2>🔫 My Weapons Collection</h2>
+                <div class="weapon-grid">
+                    <div class="weapon-card iran" onclick="selectWeapon('Zulfikar')">
+                        <div class="weapon-icon">🔫</div>
+                        <div class="weapon-name">Zulfikar</div>
+                        <div class="weapon-rarity rarity-common">COMMON</div>
+                    </div>
+                    <div class="weapon-card usa" onclick="selectWeapon('M1911')">
+                        <div class="weapon-icon">🔫</div>
+                        <div class="weapon-name">M1911</div>
+                        <div class="weapon-rarity rarity-uncommon">UNCOMMON</div>
+                    </div>
+                    <div class="weapon-card iran" onclick="selectWeapon('KH-2002')">
+                        <div class="weapon-icon">🔫</div>
+                        <div class="weapon-name">KH-2002</div>
+                        <div class="weapon-rarity rarity-rare">RARE</div>
+                    </div>
+                    <div class="weapon-card usa" onclick="selectWeapon('M4A1')">
+                        <div class="weapon-icon">🔫</div>
+                        <div class="weapon-name">M4A1</div>
+                        <div class="weapon-rarity rarity-epic">EPIC</div>
+                    </div>
+                    <div class="weapon-card iran" onclick="selectWeapon('Taj')">
+                        <div class="weapon-icon">🔫</div>
+                        <div class="weapon-name">Taj</div>
+                        <div class="weapon-rarity rarity-legendary">LEGENDARY</div>
+                    </div>
+                    <div class="weapon-card usa" onclick="selectWeapon('Barrett')">
+                        <div class="weapon-icon">🔫</div>
+                        <div class="weapon-name">Barrett M82</div>
+                        <div class="weapon-rarity rarity-legendary">LEGENDARY</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>⚡ Weapon Boosts</h2>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
+                    <div style="background: #f7fafc; padding: 15px; border-radius: 10px; text-align: center;">
+                        <div style="font-size: 1.5em; margin-bottom: 10px;">⚡</div>
+                        <div style="font-weight: bold; margin-bottom: 5px;">Damage Boost</div>
+                        <div style="color: #48bb78; font-weight: bold;">+20% Damage</div>
+                        <div style="color: #718096; font-size: 0.9em;">24 hours</div>
+                        <button class="btn btn-primary" style="margin-top: 10px; font-size: 0.9em;">50 STG</button>
+                    </div>
+                    <div style="background: #f7fafc; padding: 15px; border-radius: 10px; text-align: center;">
+                        <div style="font-size: 1.5em; margin-bottom: 10px;">🎯</div>
+                        <div style="font-weight: bold; margin-bottom: 5px;">Accuracy Boost</div>
+                        <div style="color: #48bb78; font-weight: bold;">+15% Accuracy</div>
+                        <div style="color: #718096; font-size: 0.9em;">24 hours</div>
+                        <button class="btn btn-primary" style="margin-top: 10px; font-size: 0.9em;">40 STG</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Battle Tab -->
+        <div id="battle" class="tab-content">
+            <div class="battle-arena">
+                <h2>⚔️ Battle Arena</h2>
+                <div class="battle-players">
+                    <div class="player-card">
+                        <div style="font-size: 2em; margin-bottom: 10px;">👤</div>
+                        <div style="font-weight: bold; margin-bottom: 5px;">Player1</div>
+                        <div style="color: #e53e3e;">🇮🇳 Iran</div>
+                        <div style="margin-top: 10px;">
+                            <div>Level 25</div>
+                            <div>2,500 STG</div>
+                        </div>
+                    </div>
+                    <div class="vs-text">VS</div>
+                    <div class="player-card">
+                        <div style="font-size: 2em; margin-bottom: 10px;">👤</div>
+                        <div style="font-weight: bold; margin-bottom: 5px;">Player2</div>
+                        <div style="color: #3182ce;">🇺🇸 USA</div>
+                        <div style="margin-top: 10px;">
+                            <div>Level 22</div>
+                            <div>1,800 STG</div>
+                        </div>
+                    </div>
+                </div>
+                <div style="margin-top: 20px;">
+                    <button class="btn btn-success" onclick="startBattle()" style="font-size: 1.2em; padding: 15px 30px;">
+                        ⚔️ Start Battle
+                    </button>
+                </div>
+            </div>
+
+            <div class="section" style="margin-top: 20px;">
+                <h2>🏆 Active Tournaments</h2>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px;">
+                    <div style="background: #f7fafc; padding: 15px; border-radius: 10px; text-align: center;">
+                        <div style="font-size: 1.5em; margin-bottom: 10px;">🏆</div>
+                        <div style="font-weight: bold; margin-bottom: 5px;">Spring Championship</div>
+                        <div style="color: #718096; font-size: 0.9em;">456 participants</div>
+                        <div style="color: #f59e0b; font-weight: bold; margin-bottom: 10px;">50,000 STG Prize</div>
+                        <button class="btn btn-warning" style="font-size: 0.9em;">Join Tournament</button>
+                    </div>
+                    <div style="background: #f7fafc; padding: 15px; border-radius: 10px; text-align: center;">
+                        <div style="font-size: 1.5em; margin-bottom: 10px;">🎯</div>
+                        <div style="font-weight: bold; margin-bottom: 5px;">Weekend Warrior</div>
+                        <div style="color: #718096; font-size: 0.9em;">234 participants</div>
+                        <div style="color: #f59e0b; font-weight: bold; margin-bottom: 10px;">25,000 STG Prize</div>
+                        <button class="btn btn-warning" style="font-size: 0.9em;">Join Tournament</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Collectibles Tab -->
+        <div id="collectibles" class="tab-content">
+            <div class="section">
+                <h2>🎁 My Collectibles</h2>
+                <div class="collectibles-grid">
+                    <div class="collectible-item owned" onclick="viewCollectible('skin1')">
+                        <div class="collectible-icon">👤</div>
+                        <div class="collectible-name">Elite Guard</div>
+                    </div>
+                    <div class="collectible-item owned" onclick="viewCollectible('skin2')">
+                        <div class="collectible-icon">👤</div>
+                        <div class="collectible-name">Patriot</div>
+                    </div>
+                    <div class="collectible-item" onclick="viewCollectible('skin3')">
+                        <div class="collectible-icon">👤</div>
+                        <div class="collectible-name">Phoenix</div>
+                    </div>
+                    <div class="collectible-item owned" onclick="viewCollectible('badge1')">
+                        <div class="collectible-icon">🎖️</div>
+                        <div class="collectible-name">Sharpshooter</div>
+                    </div>
+                    <div class="collectible-item" onclick="viewCollectible('badge2')">
+                        <div class="collectible-icon">🎖️</div>
+                        <div class="collectible-name">Champion</div>
+                    </div>
+                    <div class="collectible-item owned" onclick="viewCollectible('emote1')">
+                        <div class="collectible-icon">😀</div>
+                        <div class="collectible-name">Victory Dance</div>
+                    </div>
+                    <div class="collectible-item owned" onclick="viewCollectible('emote2')">
+                        <div class="collectible-icon">😀</div>
+                        <div class="collectible-name">Respect Bow</div>
+                    </div>
+                    <div class="collectible-item" onclick="viewCollectible('emote3')">
+                        <div class="collectible-icon">😀</div>
+                        <div class="collectible-name">Phoenix Rise</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>📊 Collection Progress</h2>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-value">45%</div>
+                        <div class="stat-label">Weapons</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">67%</div>
+                        <div class="stat-label">Skins</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">23%</div>
+                        <div class="stat-label">Achievements</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">38%</div>
+                        <div class="stat-label">Badges</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Achievements Tab -->
+        <div id="achievements" class="tab-content">
+            <div class="section">
+                <h2>🏆 My Achievements</h2>
+                <div class="achievement-list">
+                    <div class="achievement-item unlocked">
+                        <div class="achievement-icon">🩸</div>
+                        <div class="achievement-name">First Blood</div>
+                        <div class="achievement-desc">Win your first battle</div>
+                    </div>
+                    <div class="achievement-item unlocked">
+                        <div class="achievement-icon">⚔️</div>
+                        <div class="achievement-name">Warrior</div>
+                        <div class="achievement-desc">Win 100 battles</div>
+                    </div>
+                    <div class="achievement-item unlocked">
+                        <div class="achievement-icon">🎯</div>
+                        <div class="achievement-name">Sharpshooter</div>
+                        <div class="achievement-desc">Achieve 90% accuracy</div>
+                    </div>
+                    <div class="achievement-item">
+                        <div class="achievement-icon">🏆</div>
+                        <div class="achievement-name">Champion</div>
+                        <div class="achievement-desc">Win a tournament</div>
+                    </div>
+                    <div class="achievement-item">
+                        <div class="achievement-icon">👑</div>
+                        <div class="achievement-name">Living Legend</div>
+                        <div class="achievement-desc">Reach level 100</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Shop Tab -->
+        <div id="shop" class="tab-content">
+            <div class="section">
+                <h2>🛍️ STG Token Shop</h2>
+                <div class="shop-grid">
+                    <div class="shop-item" onclick="purchaseItem('tokens100')">
+                        <div class="shop-icon">💰</div>
+                        <div class="shop-name">100 STG</div>
+                        <div class="shop-price">$1.00</div>
+                    </div>
+                    <div class="shop-item" onclick="purchaseItem('tokens500')">
+                        <div class="shop-icon">💰</div>
+                        <div class="shop-name">500 STG</div>
+                        <div class="shop-price">$4.50</div>
+                    </div>
+                    <div class="shop-item" onclick="purchaseItem('tokens1000')">
+                        <div class="shop-icon">💰</div>
+                        <div class="shop-name">1,000 STG</div>
+                        <div class="shop-price">$8.00</div>
+                    </div>
+                    <div class="shop-item" onclick="purchaseItem('tokens5000')">
+                        <div class="shop-icon">💰</div>
+                        <div class="shop-name">5,000 STG</div>
+                        <div class="shop-price">$35.00</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>⚡ Boost Packs</h2>
+                <div class="shop-grid">
+                    <div class="shop-item" onclick="purchaseItem('boost_basic')">
+                        <div class="shop-icon">⚡</div>
+                        <div class="shop-name">Basic Boost</div>
+                        <div class="shop-price">50 STG</div>
+                    </div>
+                    <div class="shop-item" onclick="purchaseItem('boost_advanced')">
+                        <div class="shop-icon">⚡</div>
+                        <div class="shop-name">Advanced Boost</div>
+                        <div class="shop-price">120 STG</div>
+                    </div>
+                    <div class="shop-item" onclick="purchaseItem('boost_all')">
+                        <div class="shop-icon">⚡</div>
+                        <div class="shop-name">All Stats Boost</div>
+                        <div class="shop-price">300 STG</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Profile Tab -->
+        <div id="profile" class="tab-content">
+            <div class="user-profile">
+                <div class="user-avatar">👤</div>
+                <div class="user-name">Player1</div>
+                <div class="user-stats">
+                    <div class="user-stat">
+                        <div class="user-stat-value">25</div>
+                        <div class="user-stat-label">Level</div>
+                    </div>
+                    <div class="user-stat">
+                        <div class="user-stat-value">2,500</div>
+                        <div class="user-stat-label">STG Tokens</div>
+                    </div>
+                    <div class="user-stat">
+                        <div class="user-stat-value">78.9%</div>
+                        <div class="user-stat-label">Win Rate</div>
+                    </div>
+                    <div class="user-stat">
+                        <div class="user-stat-value">156</div>
+                        <div class="user-stat-label">Battles</div>
+                    </div>
+                    <div class="user-stat">
+                        <div class="user-stat-value">45</div>
+                        <div class="user-stat-label">Weapons</div>
+                    </div>
+                    <div class="user-stat">
+                        <div class="user-stat-value">23</div>
+                        <div class="user-stat-label">Achievements</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>📊 Statistics</h2>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-value">123</div>
+                        <div class="stat-label">Wins</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">33</div>
+                        <div class="stat-label">Losses</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">5:23</div>
+                        <div class="stat-label">Avg Battle Time</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">89.2%</div>
+                        <div class="stat-label">Accuracy</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>🏆 Recent Achievements</h2>
+                <div style="text-align: center;">
+                    <div style="display: inline-block; margin: 10px; text-align: center;">
+                        <div style="font-size: 2em;">🎯</div>
+                        <div style="font-weight: bold; margin-top: 5px;">Sharpshooter</div>
+                    </div>
+                    <div style="display: inline-block; margin: 10px; text-align: center;">
+                        <div style="font-size: 2em;">⚔️</div>
+                        <div style="font-weight: bold; margin-top: 5px;">Warrior</div>
+                    </div>
+                    <div style="display: inline-block; margin: 10px; text-align: center;">
+                        <div style="font-size: 2em;">🩸</div>
+                        <div style="font-weight: bold; margin-top: 5px;">First Blood</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Container -->
+    <div id="notification" class="notification">
+        <div id="notification-content"></div>
+    </div>
+
+    <script>
+        // Tab Navigation
+        function showTab(tabName) {
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.nav-tab').forEach(btn => btn.classList.remove('active'));
+            
+            document.getElementById(tabName).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        // Notification System
+        function showNotification(message, type = 'info') {
+            const notification = document.getElementById('notification');
+            const content = document.getElementById('notification-content');
+            
+            notification.className = `notification ${type}`;
+            content.textContent = message;
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+
+        // Weapon Animation System
+        function selectWeapon(weaponName) {
+            showNotification(`Selected ${weaponName}!`, 'success');
+            createWeaponAnimation(weaponName);
+        }
+
+        function createWeaponAnimation(weaponName) {
+            const weapon = document.createElement('div');
+            weapon.className = 'weapon-animation';
+            weapon.textContent = '🔫';
+            weapon.style.left = Math.random() * window.innerWidth + 'px';
+            weapon.style.top = window.innerHeight + 'px';
+            
+            document.body.appendChild(weapon);
+            
+            setTimeout(() => {
+                weapon.remove();
+            }, 2000);
+        }
+
+        // Battle Functions
+        function startBattle() {
+            showNotification('Battle starting!', 'success');
+            setTimeout(() => {
+                const winner = Math.random() > 0.5 ? 'Player1' : 'Player2';
+                showNotification(`${winner} wins the battle!`, 'success');
+            }, 3000);
+        }
+
+        function startQuickBattle() {
+            showTab('battle');
+            showNotification('Quick battle mode activated!', 'info');
+        }
+
+        function joinTournament() {
+            showNotification('Joined tournament!', 'success');
+        }
+
+        // Shop Functions
+        function purchaseItem(itemId) {
+            showNotification(`Purchased ${itemId}!`, 'success');
+        }
+
+        function openShop() {
+            showTab('shop');
+        }
+
+        function openWeapons() {
+            showTab('weapons');
+        }
+
+        // Collectible Functions
+        function viewCollectible(collectibleId) {
+            showNotification(`Viewing collectible ${collectibleId}`, 'info');
+        }
+
+        // Initialize floating weapons
+        function createFloatingWeapon() {
+            const weapon = document.createElement('div');
+            weapon.className = 'floating-weapon';
+            weapon.textContent = '🔫';
+            weapon.style.left = Math.random() * window.innerWidth + 'px';
+            weapon.style.top = Math.random() * window.innerHeight + 'px';
+            
+            weapon.onclick = () => {
+                showNotification('Found a weapon!', 'success');
+                weapon.remove();
+            };
+            
+            document.body.appendChild(weapon);
+        }
+
+        // Create floating weapons periodically
+        setInterval(createFloatingWeapon, 10000);
+
+        // Initialize app
+        document.addEventListener('DOMContentLoaded', function() {
+            showNotification('Welcome to Team Iran vs USA!', 'info');
+            
+            // Create initial floating weapons
+            for (let i = 0; i < 3; i++) {
+                setTimeout(createFloatingWeapon, i * 2000);
+            }
+        });
+
+        // Add touch support for mobile
+        document.addEventListener('touchstart', function(e) {
+            if (e.target.classList.contains('weapon-card') || 
+                e.target.classList.contains('collectible-item') || 
+                e.target.classList.contains('shop-item')) {
+                e.target.click();
+            }
+        });
+    </script>
+</body>
+</html>

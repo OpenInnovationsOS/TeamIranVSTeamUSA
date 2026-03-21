@@ -1,0 +1,716 @@
+{
+  "summary": {
+    "timestamp": "2026-03-08T12:07:22.261Z",
+    "duration": 4900,
+    "totalTests": 74,
+    "passed": 64,
+    "failed": 1,
+    "warnings": 8,
+    "successRate": 86.49
+  },
+  "categories": {
+    "infrastructure": {
+      "total": 6,
+      "passed": 5,
+      "failed": 0,
+      "warnings": 1
+    },
+    "application": {
+      "total": 6,
+      "passed": 4,
+      "failed": 1,
+      "warnings": 1
+    },
+    "database": {
+      "total": 5,
+      "passed": 4,
+      "failed": 0,
+      "warnings": 1
+    },
+    "api": {
+      "total": 12,
+      "passed": 12,
+      "failed": 0,
+      "warnings": 0
+    },
+    "frontend": {
+      "total": 10,
+      "passed": 9,
+      "failed": 0,
+      "warnings": 1
+    },
+    "security": {
+      "total": 6,
+      "passed": 5,
+      "failed": 0,
+      "warnings": 1
+    },
+    "performance": {
+      "total": 5,
+      "passed": 4,
+      "failed": 0,
+      "warnings": 0
+    },
+    "integration": {
+      "total": 5,
+      "passed": 3,
+      "failed": 0,
+      "warnings": 2
+    },
+    "telegram": {
+      "total": 4,
+      "passed": 4,
+      "failed": 0,
+      "warnings": 0
+    },
+    "monitoring": {
+      "total": 5,
+      "passed": 4,
+      "failed": 0,
+      "warnings": 1
+    },
+    "backup": {
+      "total": 4,
+      "passed": 4,
+      "failed": 0,
+      "warnings": 0
+    },
+    "deployment": {
+      "total": 6,
+      "passed": 6,
+      "failed": 0,
+      "warnings": 0
+    }
+  },
+  "details": [
+    {
+      "timestamp": "2026-03-08T12:07:17.414Z",
+      "testName": "Node.js Version Check",
+      "status": "passed",
+      "details": "Version: v24.13.0",
+      "category": "infrastructure",
+      "duration": 56
+    },
+    {
+      "timestamp": "2026-03-08T12:07:19.705Z",
+      "testName": "npm Availability",
+      "status": "passed",
+      "details": "npm is available",
+      "category": "infrastructure",
+      "duration": 2344
+    },
+    {
+      "timestamp": "2026-03-08T12:07:19.747Z",
+      "testName": "package.json Structure",
+      "status": "passed",
+      "details": "Name: team-iran-vs-usa-telegram-game",
+      "category": "infrastructure",
+      "duration": 2386
+    },
+    {
+      "timestamp": "2026-03-08T12:07:19.779Z",
+      "testName": "Dependencies Installation",
+      "status": "passed",
+      "details": "node_modules exists",
+      "category": "infrastructure",
+      "duration": 2418
+    },
+    {
+      "timestamp": "2026-03-08T12:07:19.806Z",
+      "testName": "File System Permissions",
+      "status": "passed",
+      "details": "Write permissions OK",
+      "category": "infrastructure",
+      "duration": 2445
+    },
+    {
+      "timestamp": "2026-03-08T12:07:19.907Z",
+      "testName": "Memory Availability",
+      "status": "warning",
+      "details": "Low memory: 0.38GB",
+      "category": "infrastructure",
+      "duration": 2546
+    },
+    {
+      "timestamp": "2026-03-08T12:07:20.582Z",
+      "testName": "Application Server",
+      "status": "failed",
+      "details": "Status: 404",
+      "category": "application",
+      "duration": 3221
+    },
+    {
+      "timestamp": "2026-03-08T12:07:20.643Z",
+      "testName": "Health Endpoint",
+      "status": "warning",
+      "details": "Status: 404",
+      "category": "application",
+      "duration": 3282
+    },
+    {
+      "timestamp": "2026-03-08T12:07:20.676Z",
+      "testName": "Application Structure",
+      "status": "passed",
+      "details": "src/ directory exists",
+      "category": "application",
+      "duration": 3315
+    },
+    {
+      "timestamp": "2026-03-08T12:07:20.719Z",
+      "testName": "Main Server File",
+      "status": "passed",
+      "details": "server.js exists",
+      "category": "application",
+      "duration": 3358
+    },
+    {
+      "timestamp": "2026-03-08T12:07:20.793Z",
+      "testName": "Production Server",
+      "status": "passed",
+      "details": "server-production.js exists",
+      "category": "application",
+      "duration": 3432
+    },
+    {
+      "timestamp": "2026-03-08T12:07:20.894Z",
+      "testName": "Clustering Server",
+      "status": "passed",
+      "details": "cluster-server.js exists",
+      "category": "application",
+      "duration": 3533
+    },
+    {
+      "timestamp": "2026-03-08T12:07:20.958Z",
+      "testName": "Database File",
+      "status": "passed",
+      "details": "SQLite database exists",
+      "category": "database",
+      "duration": 3597
+    },
+    {
+      "timestamp": "2026-03-08T12:07:20.961Z",
+      "testName": "Database Directory",
+      "status": "passed",
+      "details": "data/ directory exists",
+      "category": "database",
+      "duration": 3600
+    },
+    {
+      "timestamp": "2026-03-08T12:07:20.963Z",
+      "testName": "Migration Files",
+      "status": "warning",
+      "details": "migrations/ directory not found",
+      "category": "database",
+      "duration": 3602
+    },
+    {
+      "timestamp": "2026-03-08T12:07:20.966Z",
+      "testName": "Seed Script",
+      "status": "passed",
+      "details": "seed-prod.js exists",
+      "category": "database",
+      "duration": 3605
+    },
+    {
+      "timestamp": "2026-03-08T12:07:20.973Z",
+      "testName": "Database Configuration",
+      "status": "passed",
+      "details": ".env.production exists",
+      "category": "database",
+      "duration": 3612
+    },
+    {
+      "timestamp": "2026-03-08T12:07:20.993Z",
+      "testName": "API Base Endpoint",
+      "status": "passed",
+      "details": "Status: 404",
+      "category": "api",
+      "duration": 3632
+    },
+    {
+      "timestamp": "2026-03-08T12:07:21.005Z",
+      "testName": "User Endpoint: /api/users",
+      "status": "passed",
+      "details": "Status: 404",
+      "category": "api",
+      "duration": 3644
+    },
+    {
+      "timestamp": "2026-03-08T12:07:21.019Z",
+      "testName": "User Endpoint: /api/users/profile",
+      "status": "passed",
+      "details": "Status: 404",
+      "category": "api",
+      "duration": 3658
+    },
+    {
+      "timestamp": "2026-03-08T12:07:21.048Z",
+      "testName": "User Endpoint: /api/users/leaderboard",
+      "status": "passed",
+      "details": "Status: 404",
+      "category": "api",
+      "duration": 3687
+    },
+    {
+      "timestamp": "2026-03-08T12:07:21.067Z",
+      "testName": "Game Endpoint: /api/battles",
+      "status": "passed",
+      "details": "Status: 404",
+      "category": "api",
+      "duration": 3706
+    },
+    {
+      "timestamp": "2026-03-08T12:07:21.082Z",
+      "testName": "Game Endpoint: /api/territories",
+      "status": "passed",
+      "details": "Status: 404",
+      "category": "api",
+      "duration": 3721
+    },
+    {
+      "timestamp": "2026-03-08T12:07:21.123Z",
+      "testName": "Game Endpoint: /api/tournaments",
+      "status": "passed",
+      "details": "Status: 404",
+      "category": "api",
+      "duration": 3762
+    },
+    {
+      "timestamp": "2026-03-08T12:07:21.188Z",
+      "testName": "Game Endpoint: /api/missions",
+      "status": "passed",
+      "details": "Status: 404",
+      "category": "api",
+      "duration": 3827
+    },
+    {
+      "timestamp": "2026-03-08T12:07:21.226Z",
+      "testName": "Marketplace Endpoint: /api/marketplace",
+      "status": "passed",
+      "details": "Status: 404",
+      "category": "api",
+      "duration": 3865
+    },
+    {
+      "timestamp": "2026-03-08T12:07:21.248Z",
+      "testName": "Marketplace Endpoint: /api/marketplace/items",
+      "status": "passed",
+      "details": "Status: 404",
+      "category": "api",
+      "duration": 3887
+    },
+    {
+      "timestamp": "2026-03-08T12:07:21.260Z",
+      "testName": "Marketplace Endpoint: /api/premium",
+      "status": "passed",
+      "details": "Status: 404",
+      "category": "api",
+      "duration": 3899
+    },
+    {
+      "timestamp": "2026-03-08T12:07:21.294Z",
+      "testName": "API Response Format",
+      "status": "passed",
+      "details": "JSON response valid",
+      "category": "api",
+      "duration": 3933
+    },
+    {
+      "timestamp": "2026-03-08T12:07:21.320Z",
+      "testName": "Frontend Directory",
+      "status": "passed",
+      "details": "frontend/ exists",
+      "category": "frontend",
+      "duration": 3959
+    },
+    {
+      "timestamp": "2026-03-08T12:07:21.323Z",
+      "testName": "React App Component",
+      "status": "passed",
+      "details": "App.js exists",
+      "category": "frontend",
+      "duration": 3962
+    },
+    {
+      "timestamp": "2026-03-08T12:07:21.363Z",
+      "testName": "Component: BattleArena.js",
+      "status": "passed",
+      "details": "Component exists",
+      "category": "frontend",
+      "duration": 4002
+    },
+    {
+      "timestamp": "2026-03-08T12:07:21.432Z",
+      "testName": "Component: Profile.js",
+      "status": "passed",
+      "details": "Component exists",
+      "category": "frontend",
+      "duration": 4071
+    },
+    {
+      "timestamp": "2026-03-08T12:07:21.434Z",
+      "testName": "Component: Leaderboard.js",
+      "status": "passed",
+      "details": "Component exists",
+      "category": "frontend",
+      "duration": 4073
+    },
+    {
+      "timestamp": "2026-03-08T12:07:21.437Z",
+      "testName": "Component: TerritoryMap.js",
+      "status": "passed",
+      "details": "Component exists",
+      "category": "frontend",
+      "duration": 4076
+    },
+    {
+      "timestamp": "2026-03-08T12:07:21.440Z",
+      "testName": "Component: Marketplace.js",
+      "status": "passed",
+      "details": "Component exists",
+      "category": "frontend",
+      "duration": 4079
+    },
+    {
+      "timestamp": "2026-03-08T12:07:21.442Z",
+      "testName": "Component: Tournaments.js",
+      "status": "passed",
+      "details": "Component exists",
+      "category": "frontend",
+      "duration": 4081
+    },
+    {
+      "timestamp": "2026-03-08T12:07:21.462Z",
+      "testName": "Frontend package.json",
+      "status": "passed",
+      "details": "Frontend package.json exists",
+      "category": "frontend",
+      "duration": 4101
+    },
+    {
+      "timestamp": "2026-03-08T12:07:21.514Z",
+      "testName": "Build Output",
+      "status": "warning",
+      "details": "dist/ directory not found",
+      "category": "frontend",
+      "duration": 4153
+    },
+    {
+      "timestamp": "2026-03-08T12:07:21.729Z",
+      "testName": "SSL/HTTPS Configuration",
+      "status": "warning",
+      "details": "SSL not available (expected for localhost)",
+      "category": "security",
+      "duration": 4368
+    },
+    {
+      "timestamp": "2026-03-08T12:07:21.760Z",
+      "testName": "Security Headers",
+      "status": "passed",
+      "details": "Security headers present",
+      "category": "security",
+      "duration": 4399
+    },
+    {
+      "timestamp": "2026-03-08T12:07:21.776Z",
+      "testName": "CORS Configuration",
+      "status": "passed",
+      "details": "CORS headers present",
+      "category": "security",
+      "duration": 4415
+    },
+    {
+      "timestamp": "2026-03-08T12:07:21.780Z",
+      "testName": "Environment Variables",
+      "status": "passed",
+      "details": ".env.production exists",
+      "category": "security",
+      "duration": 4419
+    },
+    {
+      "timestamp": "2026-03-08T12:07:21.789Z",
+      "testName": "Security Middleware",
+      "status": "passed",
+      "details": "security.js exists",
+      "category": "security",
+      "duration": 4428
+    },
+    {
+      "timestamp": "2026-03-08T12:07:21.793Z",
+      "testName": "Rate Limiting",
+      "status": "passed",
+      "details": "rateLimit.js exists",
+      "category": "security",
+      "duration": 4432
+    },
+    {
+      "timestamp": "2026-03-08T12:07:21.811Z",
+      "testName": "Response Time",
+      "status": "passed",
+      "details": "6ms",
+      "category": "performance",
+      "duration": 4450
+    },
+    {
+      "timestamp": "2026-03-08T12:07:21.821Z",
+      "testName": "Memory Usage",
+      "status": "passed",
+      "details": "6.64MB",
+      "category": "performance",
+      "duration": 4460
+    },
+    {
+      "timestamp": "2026-03-08T12:07:21.954Z",
+      "testName": "CPU Usage",
+      "status": "passed",
+      "details": "0%",
+      "category": "performance",
+      "duration": 4593
+    },
+    {
+      "timestamp": "2026-03-08T12:07:22.043Z",
+      "testName": "Concurrent Requests",
+      "status": "passed",
+      "details": "10/10 successful",
+      "category": "performance",
+      "duration": 4682
+    },
+    {
+      "timestamp": "2026-03-08T12:07:22.047Z",
+      "testName": "Bundle Size",
+      "status": "skipped",
+      "details": "No build directory found",
+      "category": "performance",
+      "duration": 4686
+    },
+    {
+      "timestamp": "2026-03-08T12:07:22.063Z",
+      "testName": "Database + API Integration",
+      "status": "passed",
+      "details": "API can access database",
+      "category": "integration",
+      "duration": 4702
+    },
+    {
+      "timestamp": "2026-03-08T12:07:22.085Z",
+      "testName": "Frontend + Backend Integration",
+      "status": "warning",
+      "details": "Frontend backend issues",
+      "category": "integration",
+      "duration": 4724
+    },
+    {
+      "timestamp": "2026-03-08T12:07:22.090Z",
+      "testName": "WebSocket Integration",
+      "status": "warning",
+      "details": "WebSocket test not implemented",
+      "category": "integration",
+      "duration": 4729
+    },
+    {
+      "timestamp": "2026-03-08T12:07:22.106Z",
+      "testName": "Authentication Integration",
+      "status": "passed",
+      "details": "Auth endpoint accessible",
+      "category": "integration",
+      "duration": 4745
+    },
+    {
+      "timestamp": "2026-03-08T12:07:22.113Z",
+      "testName": "File Upload Integration",
+      "status": "passed",
+      "details": "Upload endpoint accessible",
+      "category": "integration",
+      "duration": 4752
+    },
+    {
+      "timestamp": "2026-03-08T12:07:22.122Z",
+      "testName": "Telegram Bot Script",
+      "status": "passed",
+      "details": "telegram-bot.js exists",
+      "category": "telegram",
+      "duration": 4761
+    },
+    {
+      "timestamp": "2026-03-08T12:07:22.125Z",
+      "testName": "Telegram WebApp Utility",
+      "status": "passed",
+      "details": "telegramWebApp.js exists",
+      "category": "telegram",
+      "duration": 4764
+    },
+    {
+      "timestamp": "2026-03-08T12:07:22.133Z",
+      "testName": "Telegram Webhook Endpoint",
+      "status": "passed",
+      "details": "Webhook endpoint accessible",
+      "category": "telegram",
+      "duration": 4772
+    },
+    {
+      "timestamp": "2026-03-08T12:07:22.138Z",
+      "testName": "Telegram Configuration",
+      "status": "passed",
+      "details": "Telegram config in .env",
+      "category": "telegram",
+      "duration": 4777
+    },
+    {
+      "timestamp": "2026-03-08T12:07:22.148Z",
+      "testName": "Monitoring Script",
+      "status": "passed",
+      "details": "monitor.js exists",
+      "category": "monitoring",
+      "duration": 4787
+    },
+    {
+      "timestamp": "2026-03-08T12:07:22.176Z",
+      "testName": "Prometheus Configuration",
+      "status": "passed",
+      "details": "prometheus.yml exists",
+      "category": "monitoring",
+      "duration": 4815
+    },
+    {
+      "timestamp": "2026-03-08T12:07:22.181Z",
+      "testName": "Grafana Dashboard",
+      "status": "passed",
+      "details": "game-monitoring.json exists",
+      "category": "monitoring",
+      "duration": 4820
+    },
+    {
+      "timestamp": "2026-03-08T12:07:22.184Z",
+      "testName": "Alerting Rules",
+      "status": "passed",
+      "details": "alerts.yml exists",
+      "category": "monitoring",
+      "duration": 4823
+    },
+    {
+      "timestamp": "2026-03-08T12:07:22.198Z",
+      "testName": "Metrics Endpoint",
+      "status": "warning",
+      "details": "Metrics endpoint issues",
+      "category": "monitoring",
+      "duration": 4837
+    },
+    {
+      "timestamp": "2026-03-08T12:07:22.213Z",
+      "testName": "Backup Script",
+      "status": "passed",
+      "details": "backup.js exists",
+      "category": "backup",
+      "duration": 4852
+    },
+    {
+      "timestamp": "2026-03-08T12:07:22.217Z",
+      "testName": "Disaster Recovery Script",
+      "status": "passed",
+      "details": "disaster-recovery.sh exists",
+      "category": "backup",
+      "duration": 4856
+    },
+    {
+      "timestamp": "2026-03-08T12:07:22.222Z",
+      "testName": "Backup Directory",
+      "status": "passed",
+      "details": "backups/ directory exists",
+      "category": "backup",
+      "duration": 4861
+    },
+    {
+      "timestamp": "2026-03-08T12:07:22.224Z",
+      "testName": "Backup Structure",
+      "status": "passed",
+      "details": "All backup subdirectories exist",
+      "category": "backup",
+      "duration": 4863
+    },
+    {
+      "timestamp": "2026-03-08T12:07:22.230Z",
+      "testName": "Production Dockerfile",
+      "status": "passed",
+      "details": "Dockerfile.prod exists",
+      "category": "deployment",
+      "duration": 4869
+    },
+    {
+      "timestamp": "2026-03-08T12:07:22.233Z",
+      "testName": "Docker Compose Production",
+      "status": "passed",
+      "details": "docker-compose.prod.yml exists",
+      "category": "deployment",
+      "duration": 4872
+    },
+    {
+      "timestamp": "2026-03-08T12:07:22.234Z",
+      "testName": "Kubernetes Manifests",
+      "status": "passed",
+      "details": "production.yml exists",
+      "category": "deployment",
+      "duration": 4873
+    },
+    {
+      "timestamp": "2026-03-08T12:07:22.237Z",
+      "testName": "CI/CD Pipeline",
+      "status": "passed",
+      "details": "ci-cd.yml exists",
+      "category": "deployment",
+      "duration": 4876
+    },
+    {
+      "timestamp": "2026-03-08T12:07:22.240Z",
+      "testName": "Deployment Script",
+      "status": "passed",
+      "details": "deploy.js exists",
+      "category": "deployment",
+      "duration": 4879
+    },
+    {
+      "timestamp": "2026-03-08T12:07:22.244Z",
+      "testName": "SSL Setup Script",
+      "status": "passed",
+      "details": "setup-ssl.sh exists",
+      "category": "deployment",
+      "duration": 4883
+    }
+  ],
+  "recommendations": [
+    {
+      "priority": "high",
+      "category": "critical",
+      "message": "Address 1 failed tests",
+      "details": [
+        "Application Server: Status: 404"
+      ]
+    },
+    {
+      "priority": "medium",
+      "category": "improvement",
+      "message": "Review 8 warnings",
+      "details": [
+        "Memory Availability: Low memory: 0.38GB",
+        "Health Endpoint: Status: 404",
+        "Migration Files: migrations/ directory not found",
+        "Build Output: dist/ directory not found",
+        "SSL/HTTPS Configuration: SSL not available (expected for localhost)",
+        "Frontend + Backend Integration: Frontend backend issues",
+        "WebSocket Integration: WebSocket test not implemented",
+        "Metrics Endpoint: Metrics endpoint issues"
+      ]
+    }
+  ],
+  "nextSteps": [
+    "Review and fix all failed tests",
+    "Address security vulnerabilities",
+    "Optimize performance bottlenecks",
+    "Complete missing configurations",
+    "Test in production environment",
+    "Set up monitoring alerts",
+    "Configure backup automation",
+    "Test disaster recovery procedures",
+    "Document deployment process",
+    "Schedule regular testing"
+  ]
+}

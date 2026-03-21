@@ -1,0 +1,7 @@
+{
+  "enabled": true,
+  "schedule": "daily",
+  "retention": 30,
+  "encryption": true,
+  "backupDir": "backups"
+}

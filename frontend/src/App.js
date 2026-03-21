@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { Toaster } from 'react-hot-toast';
@@ -11,10 +11,24 @@ import FactionSelection from './components/FactionSelection';
 import GameDashboard from './components/GameDashboard';
 import BattleArena from './components/BattleArena';
 import Leaderboard from './components/Leaderboard';
-import TerritoryMap from './components/TerritoryMap';
+import TerritoryControl from './components/TerritoryControl';
 import DailyMissions from './components/DailyMissions';
 import Profile from './components/Profile';
 import Navigation from './components/Navigation';
+import Guilds from './components/Guilds';
+import Marketplace from './components/Marketplace';
+import Premium from './components/Premium';
+import Tournaments from './components/Tournaments';
+import TournamentSystem from './components/TournamentSystem';
+import Staking from './components/Staking';
+import AdminProtectedRoute from './components/AdminProtectedRoute';
+import Buy from './components/Buy';
+import MilitaryWeaponsShop from './components/MilitaryWeaponsShop';
+import AutoTap from './components/AutoTap';
+import GiftSystem from './components/GiftSystem';
+import TippingSystem from './components/TippingSystem';
+import ChatSystem from './components/ChatSystem';
+import EnhancedStickyHeader from './components/EnhancedStickyHeader';
 
 // Create a client for React Query
 const queryClient = new QueryClient({
@@ -126,14 +140,14 @@ const AppContainer = styled.div`
 
 const MainContent = styled.main`
   flex: 1;
+  padding-top: 90px; // Space for futuristic sticky header
   padding-bottom: 70px; // Space for navigation
   overflow-y: auto;
 `;
 
 function App() {
-  const { user, token, isLoading, initializeAuth } = useAuthStore();
-  const { telegram, isTelegramReady } = useTelegram();
-  const [currentView, setCurrentView] = useState('dashboard');
+  const { user, isLoading, initializeAuth } = useAuthStore();
+  const { isTelegramReady } = useTelegram();
 
   useEffect(() => {
     // Initialize Telegram WebApp
@@ -181,33 +195,49 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <QueryClientProvider client={queryClient}>
-        <GlobalStyle />
-        <AppContainer>
-          <MainContent>
-            <Routes>
-              <Route path="/" element={<Navigate to="/dashboard" replace />} />
-              <Route path="/dashboard" element={<GameDashboard />} />
-              <Route path="/battle" element={<BattleArena />} />
-              <Route path="/leaderboard" element={<Leaderboard />} />
-              <Route path="/territory" element={<TerritoryMap />} />
-              <Route path="/missions" element={<DailyMissions />} />
-              <Route path="/profile" element={<Profile />} />
-              <Route path="*" element={<Navigate to="/dashboard" replace />} />
-            </Routes>
-          </MainContent>
-          <Navigation currentView={currentView} setCurrentView={setCurrentView} />
-        </AppContainer>
-        <Toaster
-          position="top-center"
-          toastOptions={{
-            duration: 3000,
-            style: {
-              background: '#1a1a2e',
-              color: '#ffffff',
-              border: '1px solid rgba(255, 255, 255, 0.1)',
-            },
-          }}
-        />
+        <Router>
+          <GlobalStyle />
+          <AppContainer>
+            <EnhancedStickyHeader />
+            <MainContent>
+              <Routes>
+                <Route path="/" element={<Navigate to="/dashboard" replace />} />
+                <Route path="/dashboard" element={<GameDashboard />} />
+                <Route path="/battle" element={<BattleArena />} />
+                <Route path="/leaderboard" element={<Leaderboard />} />
+                <Route path="/territory" element={<TerritoryControl />} />
+                <Route path="/missions" element={<DailyMissions />} />
+                <Route path="/guilds" element={<Guilds />} />
+                <Route path="/marketplace" element={<Marketplace />} />
+                <Route path="/weapons" element={<MilitaryWeaponsShop />} />
+                <Route path="/premium" element={<Premium />} />
+                <Route path="/tournaments" element={<Tournaments />} />
+                <Route path="/tournament-system" element={<TournamentSystem />} />
+                <Route path="/staking" element={<Staking />} />
+                <Route path="/autotap" element={<AutoTap />} />
+                <Route path="/gifts" element={<GiftSystem />} />
+                <Route path="/tipping" element={<TippingSystem />} />
+                <Route path="/chat" element={<ChatSystem />} />
+                <Route path="/admin" element={<AdminProtectedRoute />} />
+                <Route path="/buy" element={<Buy />} />
+                <Route path="/profile" element={<Profile />} />
+                <Route path="*" element={<Navigate to="/dashboard" replace />} />
+              </Routes>
+            </MainContent>
+            <Navigation />
+          </AppContainer>
+          <Toaster
+            position="top-center"
+            toastOptions={{
+              duration: 3000,
+              style: {
+                background: '#1a1a2e',
+                color: '#ffffff',
+                border: '1px solid rgba(255, 255, 255, 0.1)',
+              },
+            }}
+          />
+        </Router>
       </QueryClientProvider>
     </ThemeProvider>
   );

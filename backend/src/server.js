@@ -15,6 +15,14 @@ const battleRoutes = require('./routes/battles');
 const monetizationRoutes = require('./routes/monetization');
 const adminRoutes = require('./routes/admin');
 const adminMonetizationRoutes = require('./routes/admin-monetization');
+const weaponRoutes = require('./routes/weapons');
+const tournamentRoutes = require('./routes/tournaments');
+const matchmakingRoutes = require('./routes/matchmaking');
+const achievementsRoutes = require('./routes/achievements');
+const guildsRoutes = require('./routes/guilds');
+const territoriesRoutes = require('./routes/territories');
+const weaponPurchasesRoutes = require('./routes/weaponPurchases');
+const leaderboardRoutes = require('./routes/leaderboard');
 
 // Import database connection
 const connectDB = require('./config/database');
@@ -115,6 +123,14 @@ app.use('/api/battles', battleRoutes);
 app.use('/api/monetization', monetizationRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/admin', adminMonetizationRoutes);
+app.use('/api/weapons', weaponRoutes);
+app.use('/api/tournaments', tournamentRoutes);
+app.use('/api/matchmaking', matchmakingRoutes);
+app.use('/api/achievements', achievementsRoutes);
+app.use('/api/guilds', guildsRoutes);
+app.use('/api/territories', territoriesRoutes);
+app.use('/api/weapon-purchases', weaponPurchasesRoutes);
+app.use('/api/leaderboard', leaderboardRoutes);
 
 // WebSocket server
 const server = require('http').createServer(app);

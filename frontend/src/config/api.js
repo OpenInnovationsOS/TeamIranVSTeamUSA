@@ -1,5 +1,5 @@
 // API Configuration for frontend
-const API_BASE_URL = process.env.NODE_ENV === 'production' 
+const API_BASE_URL = process.env.NODE_ENV === 'production' && !process.env.REACT_APP_FORCE_LOCAL
   ? 'https://your-backend.railway.app' 
   : 'http://localhost:3001';
 
@@ -10,6 +10,11 @@ export const API_CONFIG = {
     'Content-Type': 'application/json',
   },
 };
+
+// WebSocket URL
+export const WS_URL = process.env.NODE_ENV === 'production' && !process.env.REACT_APP_FORCE_LOCAL
+  ? 'wss://your-backend.railway.app'
+  : 'ws://localhost:3001';
 
 // API Endpoints
 export const ENDPOINTS = {

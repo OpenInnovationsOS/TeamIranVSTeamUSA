@@ -1,0 +1,90 @@
+{
+  "system": {
+    "timestamp": "2026-03-08T11:49:28.185Z",
+    "cpu": {
+      "usage": 82.24,
+      "cores": 4,
+      "loadAverage": [
+        0,
+        0,
+        0
+      ]
+    },
+    "memory": {
+      "total": 4172324864,
+      "used": 3421233152,
+      "free": 751091712,
+      "usage": 82
+    },
+    "uptime": 21411.125,
+    "platform": "win32",
+    "arch": "x64",
+    "nodeVersion": "v24.13.0",
+    "pid": 15592
+  },
+  "application": {
+    "timestamp": "2026-03-08T11:49:28.185Z",
+    "memory": {
+      "rss": 31313920,
+      "heapTotal": 6352896,
+      "heapUsed": 4958528,
+      "external": 1618336,
+      "arrayBuffers": 10551
+    },
+    "cpu": {
+      "user": 156000,
+      "system": 171000
+    },
+    "uptime": 120.2982613,
+    "version": "1.0.0",
+    "environment": "development"
+  },
+  "business": {
+    "timestamp": "2026-03-08T11:49:28.185Z",
+    "activeUsers": 707,
+    "battlesPerHour": 61,
+    "revenue": 5458,
+    "conversionRate": 0.055154098209062065,
+    "averageSessionDuration": 1802,
+    "errorRate": 1.5964549584798866,
+    "responseTime": 990
+  },
+  "alerts": [
+    {
+      "type": "cpu",
+      "severity": "warning",
+      "message": "CPU usage is 82.37% (threshold: 80%)",
+      "timestamp": "2026-03-08T11:47:28.115Z"
+    },
+    {
+      "type": "active_connections",
+      "severity": "info",
+      "message": "Active users: 1496 (threshold: 1000)",
+      "timestamp": "2026-03-08T11:47:28.117Z"
+    },
+    {
+      "type": "cpu",
+      "severity": "warning",
+      "message": "CPU usage is 82.34% (threshold: 80%)",
+      "timestamp": "2026-03-08T11:47:58.138Z"
+    },
+    {
+      "type": "cpu",
+      "severity": "warning",
+      "message": "CPU usage is 82.31% (threshold: 80%)",
+      "timestamp": "2026-03-08T11:48:28.147Z"
+    },
+    {
+      "type": "cpu",
+      "severity": "warning",
+      "message": "CPU usage is 82.28% (threshold: 80%)",
+      "timestamp": "2026-03-08T11:48:58.156Z"
+    },
+    {
+      "type": "cpu",
+      "severity": "warning",
+      "message": "CPU usage is 82.24% (threshold: 80%)",
+      "timestamp": "2026-03-08T11:49:28.185Z"
+    }
+  ]
+}

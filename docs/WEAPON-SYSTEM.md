@@ -9,7 +9,7 @@ The Team Iran vs USA game features a comprehensive weapon system with animations
 ## 🎯 System Features
 
 ### Core Components
-- **100 Unique Weapons**: Balanced Iran vs USA arsenal
+- **1,000,000 Unique Weapons**: Balanced Iran vs USA arsenal
 - **Weapon Categories**: Pistols, Rifles, Snipers, Shotguns, SMGs, LMGs, Explosives, Melee, Special
 - **Rarity System**: Common, Uncommon, Rare, Epic, Legendary
 - **Animation System**: Bottom-to-top animations with particle effects

@@ -9,8 +9,25 @@
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
     
+    <!-- Cache Control -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <meta name="cache-buster" content="20250321122222222">
+    
     <!-- Content Security Policy -->
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://telegram.org; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; connect-src 'self' ws: wss:; font-src 'self' data:;">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://telegram.org; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; connect-src 'self' ws: wss: http://localhost:3000 https://localhost:3000 http://localhost:3001 https://localhost:3001 https://your-backend.railway.app; font-src 'self' data:;">
+    
+    <!-- Base URL for static assets -->
+    <base href="/">
+    
+    <!-- Fallback for static server routing -->
+    <script>
+      // Handle client-side routing for static servers
+      if (window.location.pathname !== '/' && !window.location.pathname.includes('.')) {
+        window.history.replaceState({}, '', '/');
+      }
+    </script>
     
     <!-- Telegram WebApp SDK with fallback -->
     <script>

@@ -1,0 +1,66 @@
+{
+  "system": {
+    "timestamp": "2026-03-08T11:47:28.097Z",
+    "cpu": {
+      "usage": 82.37,
+      "cores": 4,
+      "loadAverage": [
+        0,
+        0,
+        0
+      ]
+    },
+    "memory": {
+      "total": 4172324864,
+      "used": 3391143936,
+      "free": 781180928,
+      "usage": 81.28
+    },
+    "uptime": 21291.062,
+    "platform": "win32",
+    "arch": "x64",
+    "nodeVersion": "v24.13.0",
+    "pid": 15592
+  },
+  "application": {
+    "timestamp": "2026-03-08T11:47:28.116Z",
+    "memory": {
+      "rss": 31481856,
+      "heapTotal": 6352896,
+      "heapUsed": 4705432,
+      "external": 1618280,
+      "arrayBuffers": 10535
+    },
+    "cpu": {
+      "user": 140000,
+      "system": 140000
+    },
+    "uptime": 0.2291251,
+    "version": "1.0.0",
+    "environment": "development"
+  },
+  "business": {
+    "timestamp": "2026-03-08T11:47:28.117Z",
+    "activeUsers": 1496,
+    "battlesPerHour": 54,
+    "revenue": 8541,
+    "conversionRate": 0.06032840361382309,
+    "averageSessionDuration": 1957,
+    "errorRate": 2.2446469412793024,
+    "responseTime": 862
+  },
+  "alerts": [
+    {
+      "type": "cpu",
+      "severity": "warning",
+      "message": "CPU usage is 82.37% (threshold: 80%)",
+      "timestamp": "2026-03-08T11:47:28.115Z"
+    },
+    {
+      "type": "active_connections",
+      "severity": "info",
+      "message": "Active users: 1496 (threshold: 1000)",
+      "timestamp": "2026-03-08T11:47:28.117Z"
+    }
+  ]
+}

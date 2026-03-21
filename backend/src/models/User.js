@@ -18,6 +18,32 @@ const userSchema = new mongoose.Schema({
     required: true,
     index: true
   },
+  
+  // Guild information
+  guild_id: { 
+    type: mongoose.Schema.Types.ObjectId, 
+    ref: 'Guild',
+    default: null
+  },
+  guild_rank: { 
+    type: String, 
+    enum: ['leader', 'officer', 'veteran', 'member', 'recruit'],
+    default: null
+  },
+  
+  // Battle status
+  in_battle: { 
+    type: Boolean, 
+    default: false 
+  },
+  
+  // Economic data
+  stg_balance: { 
+    type: Number, 
+    default: 1000, 
+    min: 0 
+  },
+  
   game_stats: {
     level: { type: Number, default: 1, min: 1 },
     experience: { type: Number, default: 0, min: 0 },
@@ -31,15 +57,18 @@ const userSchema = new mongoose.Schema({
     win_rate: { type: Number, default: 0, min: 0, max: 1 }
   },
   inventory: {
-    weapons: [{ type: String }],
+    weapons: [{ type: String, default: [] }],
     cosmetics: [{ type: String }],
     boosts: [{
-      type: {
-        type: String,
-        enum: ['energy_boost', 'experience_boost', 'luck_boost']
-      },
-      expires_at: Date,
+      type: { type: String, enum: ['energy_boost', 'damage_boost', 'accuracy_boost', 'fire_rate_boost'] },
+      expires_at: { type: Date },
       multiplier: { type: Number, default: 1.0 }
+    }],
+    items: [{
+      item_id: String,
+      name: String,
+      quantity: Number,
+      expires_at: Date
     }]
   },
   premium_features: [{

@@ -1,0 +1,275 @@
+{
+  "deployment": {
+    "timestamp": "2026-03-08T11:52:57.086Z",
+    "duration": 507074,
+    "environment": "production",
+    "domain": "yourdomain.com",
+    "status": "partial"
+  },
+  "configuration": {
+    "environment": "production",
+    "domain": "yourdomain.com",
+    "sslEmail": "admin@yourdomain.com",
+    "database": {
+      "host": "localhost",
+      "port": "5432",
+      "name": "team_iran_vs_usa",
+      "user": "postgres",
+      "password": "your_secure_password"
+    },
+    "redis": {
+      "host": "localhost",
+      "port": "6379",
+      "password": "your_redis_password"
+    },
+    "telegram": {},
+    "monitoring": {
+      "enabled": true,
+      "prometheusPort": 9090,
+      "grafanaPort": 3001,
+      "alertingEnabled": true
+    },
+    "scaling": {
+      "enabled": false,
+      "minInstances": 2,
+      "maxInstances": 10,
+      "targetCPU": 70,
+      "targetMemory": 80
+    },
+    "backup": {
+      "enabled": true,
+      "schedule": "0 2 * * *",
+      "retention": 30,
+      "encryption": true
+    },
+    "security": {
+      "sslEnabled": true,
+      "rateLimiting": true,
+      "securityHeaders": true,
+      "firewallEnabled": true
+    }
+  },
+  "services": {
+    "application": "deployed",
+    "database": "configured",
+    "redis": "configured",
+    "monitoring": "enabled",
+    "backup": "enabled",
+    "security": "enabled",
+    "autoScaling": "disabled",
+    "telegramBot": "skipped"
+  },
+  "health": {
+    "application": false,
+    "database": false,
+    "redis": false,
+    "monitoring": false
+  },
+  "issues": {
+    "errors": [
+      {
+        "command": "chmod +x C:\\Users\\SOME\\Desktop\\TeamIranVSTeamUSA\\scripts\\setup-ssl.sh && C:\\Users\\SOME\\Desktop\\TeamIranVSTeamUSA\\scripts\\setup-ssl.sh",
+        "description": "SSL certificate setup",
+        "error": "Command failed: chmod +x C:\\Users\\SOME\\Desktop\\TeamIranVSTeamUSA\\scripts\\setup-ssl.sh && C:\\Users\\SOME\\Desktop\\TeamIranVSTeamUSA\\scripts\\setup-ssl.sh\n'chmod' is not recognized as an internal or external command,\r\noperable program or batch file.\r\n"
+      },
+      {
+        "command": "sudo -u postgres createdb team_iran_vs_usa || true",
+        "description": "Create database",
+        "error": "Command failed: sudo -u postgres createdb team_iran_vs_usa || true\n'sudo' is not recognized as an internal or external command,\r\noperable program or batch file.\r\n'true' is not recognized as an internal or external command,\r\noperable program or batch file.\r\n"
+      },
+      {
+        "command": "sudo -u postgres psql -c \"CREATE USER postgres WITH PASSWORD 'your_secure_password';\" || true",
+        "description": "Create database user",
+        "error": "Command failed: sudo -u postgres psql -c \"CREATE USER postgres WITH PASSWORD 'your_secure_password';\" || true\n'sudo' is not recognized as an internal or external command,\r\noperable program or batch file.\r\n'true' is not recognized as an internal or external command,\r\noperable program or batch file.\r\n"
+      },
+      {
+        "command": "sudo -u postgres psql -c \"GRANT ALL PRIVILEGES ON DATABASE team_iran_vs_usa TO postgres;\"",
+        "description": "Grant database privileges",
+        "error": "Command failed: sudo -u postgres psql -c \"GRANT ALL PRIVILEGES ON DATABASE team_iran_vs_usa TO postgres;\"\n'sudo' is not recognized as an internal or external command,\r\noperable program or batch file.\r\n"
+      },
+      {
+        "command": "npm run migrate:prod",
+        "description": "Run database migrations",
+        "error": "Command failed: npm run migrate:prod\nnpm error Missing script: \"migrate:prod\"\nnpm error\nnpm error To see a list of scripts, run:\nnpm error   npm run\nnpm error A complete log of this run can be found in: C:\\Users\\SOME\\AppData\\Local\\npm-cache\\_logs\\2026-03-08T11_44_39_046Z-debug-0.log\n"
+      },
+      {
+        "command": "npm run seed:prod",
+        "description": "Seed database",
+        "error": "Command failed: npm run seed:prod\nnpm error Missing script: \"seed:prod\"\nnpm error\nnpm error To see a list of scripts, run:\nnpm error   npm run\nnpm error A complete log of this run can be found in: C:\\Users\\SOME\\AppData\\Local\\npm-cache\\_logs\\2026-03-08T11_44_42_071Z-debug-0.log\n"
+      },
+      {
+        "command": "sudo systemctl restart redis-server",
+        "description": "Restart Redis",
+        "error": "Command failed: sudo systemctl restart redis-server\n'sudo' is not recognized as an internal or external command,\r\noperable program or batch file.\r\n"
+      },
+      {
+        "command": "rm -rf dist",
+        "description": "Clean previous build",
+        "error": "Command failed: rm -rf dist\n'rm' is not recognized as an internal or external command,\r\noperable program or batch file.\r\n"
+      },
+      {
+        "command": "npm ci --production=false",
+        "description": "Install dependencies",
+        "error": "Command failed: npm ci --production=false\nnpm warn config production Use `--omit=dev` instead.\nnpm error code EUSAGE\nnpm error\nnpm error `npm ci` can only install packages when your package.json and package-lock.json or npm-shrinkwrap.json are in sync. Please update your lock file with `npm install` before continuing.\nnpm error\nnpm error Missing: sqlite3@5.1.7 from lock file\nnpm error Missing: bindings@1.5.0 from lock file\nnpm error Missing: node-addon-api@7.1.1 from lock file\nnpm error Missing: node-gyp@8.4.1 from lock file\nnpm error Missing: prebuild-install@7.1.3 from lock file\nnpm error Missing: file-uri-to-path@1.0.0 from lock file\nnpm error Missing: env-paths@2.2.1 from lock file\nnpm error Missing: make-fetch-happen@9.1.0 from lock file\nnpm error Missing: npmlog@6.0.2 from lock file\nnpm error Missing: agentkeepalive@4.6.0 from lock file\nnpm error Missing: cacache@15.3.0 from lock file\nnpm error Missing: http-cache-semantics@4.2.0 from lock file\nnpm error Missing: http-proxy-agent@4.0.1 from lock file\nnpm error Missing: is-lambda@1.0.1 from lock file\nnpm error Missing: lru-cache@6.0.0 from lock file\nnpm error Missing: minipass@3.3.6 from lock file\nnpm error Missing: minipass-collect@1.0.2 from lock file\nnpm error Missing: minipass-fetch@1.4.1 from lock file\nnpm error Missing: minipass-flush@1.0.5 from lock file\nnpm error Missing: minipass-pipeline@1.2.4 from lock file\nnpm error Missing: promise-retry@2.0.1 from lock file\nnpm error Missing: socks-proxy-agent@6.2.1 from lock file\nnpm error Missing: ssri@8.0.1 from lock file\nnpm error Missing: humanize-ms@1.2.1 from lock file\nnpm error Missing: @npmcli/fs@1.1.1 from lock file\nnpm error Missing: @npmcli/move-file@1.1.2 from lock file\nnpm error Missing: infer-owner@1.0.4 from lock file\nnpm error Missing: lru-cache@6.0.0 from lock file\nnpm error Missing: minipass@3.3.6 from lock file\nnpm error Missing: p-map@4.0.0 from lock file\nnpm error Missing: promise-inflight@1.0.1 from lock file\nnpm error Missing: unique-filename@1.1.1 from lock file\nnpm error Missing: @gar/promisify@1.1.3 from lock file\nnpm error Missing: @tootallnate/once@1.1.2 from lock file\nnpm error Missing: debug@4.4.3 from lock file\nnpm error Missing: minipass@3.3.6 from lock file\nnpm error Missing: minipass@3.3.6 from lock file\nnpm error Missing: minipass-sized@1.0.3 from lock file\nnpm error Missing: minipass@3.3.6 from lock file\nnpm error Missing: minipass@3.3.6 from lock file\nnpm error Missing: minipass@3.3.6 from lock file\nnpm error Missing: aggregate-error@3.1.0 from lock file\nnpm error Missing: clean-stack@2.2.0 from lock file\nnpm error Missing: indent-string@4.0.0 from lock file\nnpm error Missing: expand-template@2.0.3 from lock file\nnpm error Missing: github-from-package@0.0.0 from lock file\nnpm error Missing: minimist@1.2.8 from lock file\nnpm error Missing: mkdirp-classic@0.5.3 from lock file\nnpm error Missing: napi-build-utils@2.0.0 from lock file\nnpm error Missing: node-abi@3.87.0 from lock file\nnpm error Missing: pump@3.0.4 from lock file\nnpm error Missing: rc@1.2.8 from lock file\nnpm error Missing: simple-get@4.0.1 from lock file\nnpm error Missing: tar-fs@2.1.4 from lock file\nnpm error Missing: err-code@2.0.3 from lock file\nnpm error Missing: retry@0.12.0 from lock file\nnpm error Missing: deep-extend@0.6.0 from lock file\nnpm error Missing: ini@1.3.8 from lock file\nnpm error Missing: strip-json-comments@2.0.1 from lock file\nnpm error Missing: decompress-response@6.0.0 from lock file\nnpm error Missing: simple-concat@1.0.1 from lock file\nnpm error Missing: mimic-response@3.1.0 from lock file\nnpm error Missing: debug@4.4.3 from lock file\nnpm error Missing: socks@2.8.7 from lock file\nnpm error Missing: ip-address@10.1.0 from lock file\nnpm error Missing: smart-buffer@4.2.0 from lock file\nnpm error Missing: minipass@3.3.6 from lock file\nnpm error Missing: chownr@1.1.4 from lock file\nnpm error Missing: pump@3.0.4 from lock file\nnpm error Missing: tar-stream@2.2.0 from lock file\nnpm error Missing: bl@4.1.0 from lock file\nnpm error Missing: fs-constants@1.0.0 from lock file\nnpm error Missing: readable-stream@3.6.2 from lock file\nnpm error Missing: unique-slug@2.0.2 from lock file\nnpm error Missing: yallist@4.0.0 from lock file\nnpm error Missing: ms@2.1.3 from lock file\nnpm error Missing: yallist@4.0.0 from lock file\nnpm error Missing: yallist@4.0.0 from lock file\nnpm error Missing: yallist@4.0.0 from lock file\nnpm error Missing: yallist@4.0.0 from lock file\nnpm error Missing: yallist@4.0.0 from lock file\nnpm error Missing: yallist@4.0.0 from lock file\nnpm error Missing: are-we-there-yet@3.0.1 from lock file\nnpm error Missing: gauge@4.0.4 from lock file\nnpm error Missing: readable-stream@3.6.2 from lock file\nnpm error Missing: ms@2.1.3 from lock file\nnpm error Missing: yallist@4.0.0 from lock file\nnpm error Missing: buffer@5.7.1 from lock file\nnpm error Missing: base64-js@1.5.1 from lock file\nnpm error Missing: ieee754@1.2.1 from lock file\nnpm error\nnpm error Clean install a project\nnpm error\nnpm error Usage:\nnpm error npm ci\nnpm error\nnpm error Options:\nnpm error [--install-strategy <hoisted|nested|shallow|linked>] [--legacy-bundling]\nnpm error [--global-style] [--omit <dev|optional|peer> [--omit <dev|optional|peer> ...]]\nnpm error [--include <prod|dev|optional|peer> [--include <prod|dev|optional|peer> ...]]\nnpm error [--strict-peer-deps] [--foreground-scripts] [--ignore-scripts] [--no-audit]\nnpm error [--no-bin-links] [--no-fund] [--dry-run]\nnpm error [-w|--workspace <workspace-name> [-w|--workspace <workspace-name> ...]]\nnpm error [--workspaces] [--include-workspace-root] [--install-links]\nnpm error\nnpm error aliases: clean-install, ic, install-clean, isntall-clean\nnpm error\nnpm error Run \"npm help ci\" for more info\nnpm error A complete log of this run can be found in: C:\\Users\\SOME\\AppData\\Local\\npm-cache\\_logs\\2026-03-08T11_44_45_904Z-debug-0.log\n"
+      },
+      {
+        "command": "npm run test:ci",
+        "description": "Run test suite",
+        "error": "Command failed: npm run test:ci\nnpm error Missing script: \"test:ci\"\nnpm error\nnpm error To see a list of scripts, run:\nnpm error   npm run\nnpm error A complete log of this run can be found in: C:\\Users\\SOME\\AppData\\Local\\npm-cache\\_logs\\2026-03-08T11_45_10_477Z-debug-0.log\n"
+      },
+      {
+        "command": "npm run build",
+        "description": "Build application",
+        "error": "Command failed: npm run build\n(node:6584) [DEP0176] DeprecationWarning: fs.F_OK is deprecated, use fs.constants.F_OK instead\n(Use `node --trace-deprecation ...` to show where the warning was created)\n"
+      },
+      {
+        "command": "docker build -f Dockerfile.prod -t team-iran-vs-usa:latest .",
+        "description": "Build Docker image",
+        "error": "Command failed: docker build -f Dockerfile.prod -t team-iran-vs-usa:latest .\nERROR: error during connect: in the default daemon configuration on Windows, the docker client must be run with elevated privileges to connect: Head \"http://%2F%2F.%2Fpipe%2Fdocker_engine/_ping\": open //./pipe/docker_engine: The system cannot find the file specified.\n"
+      },
+      {
+        "command": "docker-compose -f docker-compose.prod.yml up -d",
+        "description": "Deploy services",
+        "error": "Command failed: docker-compose -f docker-compose.prod.yml up -d\ntime=\"2026-03-08T04:47:24-07:00\" level=warning msg=\"The \\\"GRAFANA_PASSWORD\\\" variable is not set. Defaulting to a blank string.\"\ntime=\"2026-03-08T04:47:24-07:00\" level=warning msg=\"The \\\"DB_PASSWORD\\\" variable is not set. Defaulting to a blank string.\"\ntime=\"2026-03-08T04:47:24-07:00\" level=warning msg=\"The \\\"REDIS_PASSWORD\\\" variable is not set. Defaulting to a blank string.\"\ntime=\"2026-03-08T04:47:24-07:00\" level=warning msg=\"The \\\"EMAIL\\\" variable is not set. Defaulting to a blank string.\"\ntime=\"2026-03-08T04:47:24-07:00\" level=warning msg=\"The \\\"DOMAIN\\\" variable is not set. Defaulting to a blank string.\"\ntime=\"2026-03-08T04:47:24-07:00\" level=warning msg=\"The \\\"DOMAIN\\\" variable is not set. Defaulting to a blank string.\"\ntime=\"2026-03-08T04:47:24-07:00\" level=warning msg=\"The \\\"DB_PASSWORD\\\" variable is not set. Defaulting to a blank string.\"\ntime=\"2026-03-08T04:47:24-07:00\" level=warning msg=\"The \\\"DB_PASSWORD\\\" variable is not set. Defaulting to a blank string.\"\ntime=\"2026-03-08T04:47:25-07:00\" level=warning msg=\"C:\\\\Users\\\\SOME\\\\Desktop\\\\TeamIranVSTeamUSA\\\\docker-compose.prod.yml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion\"\nunable to get image 'grafana/grafana:latest': error during connect: in the default daemon configuration on Windows, the docker client must be run with elevated privileges to connect: Get \"http://%2F%2F.%2Fpipe%2Fdocker_engine/v1.51/images/grafana/grafana:latest/json\": open //./pipe/docker_engine: The system cannot find the file specified.\n"
+      },
+      {
+        "command": "sleep 30",
+        "description": "Wait for services",
+        "error": "Command failed: sleep 30\n'sleep' is not recognized as an internal or external command,\r\noperable program or batch file.\r\n"
+      },
+      {
+        "command": "curl -f http://localhost:3000/health",
+        "description": "Health check",
+        "error": "Command failed: curl -f http://localhost:3000/health\n  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current\r\n                                 Dload  Upload   Total   Spent    Left  Speed\r\n\r  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0\r  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0\r\ncurl: (22) The requested URL returned error: 404\r\n"
+      },
+      {
+        "command": "node scripts/monitor.js start",
+        "description": "Start monitoring",
+        "error": "spawnSync C:\\WINDOWS\\system32\\cmd.exe ETIMEDOUT"
+      },
+      {
+        "command": "docker-compose -f docker-compose.prod.yml up -d prometheus",
+        "description": "Start Prometheus",
+        "error": "Command failed: docker-compose -f docker-compose.prod.yml up -d prometheus\ntime=\"2026-03-08T04:52:27-07:00\" level=warning msg=\"The \\\"DB_PASSWORD\\\" variable is not set. Defaulting to a blank string.\"\ntime=\"2026-03-08T04:52:27-07:00\" level=warning msg=\"The \\\"DB_PASSWORD\\\" variable is not set. Defaulting to a blank string.\"\ntime=\"2026-03-08T04:52:27-07:00\" level=warning msg=\"The \\\"REDIS_PASSWORD\\\" variable is not set. Defaulting to a blank string.\"\ntime=\"2026-03-08T04:52:27-07:00\" level=warning msg=\"The \\\"EMAIL\\\" variable is not set. Defaulting to a blank string.\"\ntime=\"2026-03-08T04:52:27-07:00\" level=warning msg=\"The \\\"DOMAIN\\\" variable is not set. Defaulting to a blank string.\"\ntime=\"2026-03-08T04:52:27-07:00\" level=warning msg=\"The \\\"DOMAIN\\\" variable is not set. Defaulting to a blank string.\"\ntime=\"2026-03-08T04:52:27-07:00\" level=warning msg=\"The \\\"DB_PASSWORD\\\" variable is not set. Defaulting to a blank string.\"\ntime=\"2026-03-08T04:52:27-07:00\" level=warning msg=\"The \\\"GRAFANA_PASSWORD\\\" variable is not set. Defaulting to a blank string.\"\ntime=\"2026-03-08T04:52:28-07:00\" level=warning msg=\"C:\\\\Users\\\\SOME\\\\Desktop\\\\TeamIranVSTeamUSA\\\\docker-compose.prod.yml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion\"\nunable to get image 'prom/prometheus:latest': error during connect: in the default daemon configuration on Windows, the docker client must be run with elevated privileges to connect: Get \"http://%2F%2F.%2Fpipe%2Fdocker_engine/v1.51/images/prom/prometheus:latest/json\": open //./pipe/docker_engine: The system cannot find the file specified.\n"
+      },
+      {
+        "command": "docker-compose -f docker-compose.prod.yml up -d grafana",
+        "description": "Start Grafana",
+        "error": "Command failed: docker-compose -f docker-compose.prod.yml up -d grafana\ntime=\"2026-03-08T04:52:28-07:00\" level=warning msg=\"The \\\"DB_PASSWORD\\\" variable is not set. Defaulting to a blank string.\"\ntime=\"2026-03-08T04:52:28-07:00\" level=warning msg=\"The \\\"EMAIL\\\" variable is not set. Defaulting to a blank string.\"\ntime=\"2026-03-08T04:52:28-07:00\" level=warning msg=\"The \\\"DOMAIN\\\" variable is not set. Defaulting to a blank string.\"\ntime=\"2026-03-08T04:52:28-07:00\" level=warning msg=\"The \\\"DOMAIN\\\" variable is not set. Defaulting to a blank string.\"\ntime=\"2026-03-08T04:52:28-07:00\" level=warning msg=\"The \\\"GRAFANA_PASSWORD\\\" variable is not set. Defaulting to a blank string.\"\ntime=\"2026-03-08T04:52:28-07:00\" level=warning msg=\"The \\\"DB_PASSWORD\\\" variable is not set. Defaulting to a blank string.\"\ntime=\"2026-03-08T04:52:28-07:00\" level=warning msg=\"The \\\"REDIS_PASSWORD\\\" variable is not set. Defaulting to a blank string.\"\ntime=\"2026-03-08T04:52:28-07:00\" level=warning msg=\"The \\\"DB_PASSWORD\\\" variable is not set. Defaulting to a blank string.\"\ntime=\"2026-03-08T04:52:29-07:00\" level=warning msg=\"C:\\\\Users\\\\SOME\\\\Desktop\\\\TeamIranVSTeamUSA\\\\docker-compose.prod.yml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion\"\nunable to get image 'grafana/grafana:latest': error during connect: in the default daemon configuration on Windows, the docker client must be run with elevated privileges to connect: Get \"http://%2F%2F.%2Fpipe%2Fdocker_engine/v1.51/images/grafana/grafana:latest/json\": open //./pipe/docker_engine: The system cannot find the file specified.\n"
+      },
+      {
+        "command": "sleep 20",
+        "description": "Wait for monitoring services",
+        "error": "Command failed: sleep 20\n'sleep' is not recognized as an internal or external command,\r\noperable program or batch file.\r\n"
+      },
+      {
+        "command": "curl -f http://localhost:9090/-/healthy",
+        "description": "Prometheus health",
+        "error": "Command failed: curl -f http://localhost:9090/-/healthy\n  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current\r\n                                 Dload  Upload   Total   Spent    Left  Speed\r\n\r  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0\r  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0\r  0     0    0     0    0     0      0      0 --:--:--  0:00:01 --:--:--     0\r  0     0    0     0    0     0      0      0 --:--:--  0:00:02 --:--:--     0\r  0     0    0     0    0     0      0      0 --:--:--  0:00:02 --:--:--     0\r\ncurl: (7) Failed to connect to localhost port 9090 after 2861 ms: Could not connect to server\r\n"
+      },
+      {
+        "command": "curl -f http://localhost:3001/api/health",
+        "description": "Grafana health",
+        "error": "Command failed: curl -f http://localhost:3001/api/health\n  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current\r\n                                 Dload  Upload   Total   Spent    Left  Speed\r\n\r  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0\r  0     0    0     0    0     0      0      0 --:--:--  0:00:01 --:--:--     0\r  0     0    0     0    0     0      0      0 --:--:--  0:00:02 --:--:--     0\r  0     0    0     0    0     0      0      0 --:--:--  0:00:02 --:--:--     0\r\ncurl: (7) Failed to connect to localhost port 3001 after 2683 ms: Could not connect to server\r\n"
+      },
+      {
+        "command": "mkdir -p backups/{database,files,config}",
+        "description": "Create backup directories",
+        "error": "Command failed: mkdir -p backups/{database,files,config}\nThe syntax of the command is incorrect.\r\n"
+      },
+      {
+        "command": "(crontab -l 2>/dev/null; echo \"0 2 * * * /var/www/team-iran-vs-usa/scripts/backup.js full\") | crontab -",
+        "description": "Setup backup cron",
+        "error": "Command failed: (crontab -l 2>/dev/null; echo \"0 2 * * * /var/www/team-iran-vs-usa/scripts/backup.js full\") | crontab -\n'crontab' is not recognized as an internal or external command,\r\noperable program or batch file.\r\n"
+      },
+      {
+        "command": "node scripts/security-audit.js audit",
+        "description": "Run security audit",
+        "error": "Command failed: node scripts/security-audit.js audit\nC:\\Users\\SOME\\Desktop\\TeamIranVSTeamUSA\\scripts\\security-audit.js:1266\r\n      const auditor = new SecurityAuditor();\r\n            ^\r\n\r\nSyntaxError: Identifier 'auditor' has already been declared\r\n    at wrapSafe (node:internal/modules/cjs/loader:1692:18)\r\n    at Module._compile (node:internal/modules/cjs/loader:1735:20)\r\n    at Object..js (node:internal/modules/cjs/loader:1893:10)\r\n    at Module.load (node:internal/modules/cjs/loader:1481:32)\r\n    at Module._load (node:internal/modules/cjs/loader:1300:12)\r\n    at TracingChannel.traceSync (node:diagnostics_channel:328:14)\r\n    at wrapModuleLoad (node:internal/modules/cjs/loader:245:24)\r\n    at Module.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:154:5)\r\n    at node:internal/main/run_main_module:33:47\r\n\r\nNode.js v24.13.0\r\n"
+      },
+      {
+        "command": "node scripts/security-audit.js harden",
+        "description": "Apply security hardening",
+        "error": "Command failed: node scripts/security-audit.js harden\nC:\\Users\\SOME\\Desktop\\TeamIranVSTeamUSA\\scripts\\security-audit.js:1266\r\n      const auditor = new SecurityAuditor();\r\n            ^\r\n\r\nSyntaxError: Identifier 'auditor' has already been declared\r\n    at wrapSafe (node:internal/modules/cjs/loader:1692:18)\r\n    at Module._compile (node:internal/modules/cjs/loader:1735:20)\r\n    at Object..js (node:internal/modules/cjs/loader:1893:10)\r\n    at Module.load (node:internal/modules/cjs/loader:1481:32)\r\n    at Module._load (node:internal/modules/cjs/loader:1300:12)\r\n    at TracingChannel.traceSync (node:diagnostics_channel:328:14)\r\n    at wrapModuleLoad (node:internal/modules/cjs/loader:245:24)\r\n    at Module.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:154:5)\r\n    at node:internal/main/run_main_module:33:47\r\n\r\nNode.js v24.13.0\r\n"
+      },
+      {
+        "command": "sudo ufw --force reset",
+        "description": "Reset firewall",
+        "error": "Command failed: sudo ufw --force reset\n'sudo' is not recognized as an internal or external command,\r\noperable program or batch file.\r\n"
+      },
+      {
+        "command": "sudo ufw default deny incoming",
+        "description": "Set default firewall policy",
+        "error": "Command failed: sudo ufw default deny incoming\n'sudo' is not recognized as an internal or external command,\r\noperable program or batch file.\r\n"
+      },
+      {
+        "command": "sudo ufw default allow outgoing",
+        "description": "Set default firewall policy",
+        "error": "Command failed: sudo ufw default allow outgoing\n'sudo' is not recognized as an internal or external command,\r\noperable program or batch file.\r\n"
+      },
+      {
+        "command": "sudo ufw allow ssh",
+        "description": "Allow SSH",
+        "error": "Command failed: sudo ufw allow ssh\n'sudo' is not recognized as an internal or external command,\r\noperable program or batch file.\r\n"
+      },
+      {
+        "command": "sudo ufw allow 80/tcp",
+        "description": "Allow HTTP",
+        "error": "Command failed: sudo ufw allow 80/tcp\n'sudo' is not recognized as an internal or external command,\r\noperable program or batch file.\r\n"
+      },
+      {
+        "command": "sudo ufw allow 443/tcp",
+        "description": "Allow HTTPS",
+        "error": "Command failed: sudo ufw allow 443/tcp\n'sudo' is not recognized as an internal or external command,\r\noperable program or batch file.\r\n"
+      },
+      {
+        "command": "sudo ufw enable",
+        "description": "Enable firewall",
+        "error": "Command failed: sudo ufw enable\n'sudo' is not recognized as an internal or external command,\r\noperable program or batch file.\r\n"
+      },
+      {
+        "command": "npm run test:unit",
+        "description": "Run unit tests",
+        "error": "Command failed: npm run test:unit\nnpm error Missing script: \"test:unit\"\nnpm error\nnpm error To see a list of scripts, run:\nnpm error   npm run\nnpm error A complete log of this run can be found in: C:\\Users\\SOME\\AppData\\Local\\npm-cache\\_logs\\2026-03-08T11_52_45_215Z-debug-0.log\n"
+      },
+      {
+        "command": "npm run test:integration",
+        "description": "Run integration tests",
+        "error": "Command failed: npm run test:integration\nnpm error Missing script: \"test:integration\"\nnpm error\nnpm error To see a list of scripts, run:\nnpm error   npm run\nnpm error A complete log of this run can be found in: C:\\Users\\SOME\\AppData\\Local\\npm-cache\\_logs\\2026-03-08T11_52_48_082Z-debug-0.log\n"
+      },
+      {
+        "command": "npm run test:e2e",
+        "description": "Run E2E tests",
+        "error": "Command failed: npm run test:e2e\nnpm error Missing script: \"test:e2e\"\nnpm error\nnpm error To see a list of scripts, run:\nnpm error   npm run\nnpm error A complete log of this run can be found in: C:\\Users\\SOME\\AppData\\Local\\npm-cache\\_logs\\2026-03-08T11_52_50_292Z-debug-0.log\n"
+      },
+      {
+        "command": "npm run test:performance",
+        "description": "Run performance tests",
+        "error": "Command failed: npm run test:performance\nnpm error Missing script: \"test:performance\"\nnpm error\nnpm error To see a list of scripts, run:\nnpm error   npm run\nnpm error A complete log of this run can be found in: C:\\Users\\SOME\\AppData\\Local\\npm-cache\\_logs\\2026-03-08T11_52_53_023Z-debug-0.log\n"
+      },
+      {
+        "command": "npm run test:security",
+        "description": "Run security tests",
+        "error": "Command failed: npm run test:security\nnpm error Missing script: \"test:security\"\nnpm error\nnpm error To see a list of scripts, run:\nnpm error   npm run\nnpm error A complete log of this run can be found in: C:\\Users\\SOME\\AppData\\Local\\npm-cache\\_logs\\2026-03-08T11_52_55_632Z-debug-0.log\n"
+      }
+    ],
+    "warnings": [
+      "SSL setup may need manual intervention",
+      "Service health check failed",
+      "Monitoring health check failed",
+      "Telegram bot setup skipped - no token provided"
+    ]
+  },
+  "nextSteps": [
+    "Address deployment errors",
+    "Review deployment warnings",
+    "Configure domain DNS to point to production server",
+    "Verify SSL certificate is properly installed",
+    "Test all application features",
+    "Set up monitoring alerts",
+    "Configure backup notifications",
+    "Test disaster recovery procedures",
+    "Review security configurations",
+    "Load test the application"
+  ]
+}

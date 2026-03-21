@@ -1,0 +1,108 @@
+{
+  "system": {
+    "timestamp": "2026-03-21T06:01:47.254Z",
+    "cpu": {
+      "usage": 21.71,
+      "cores": 4,
+      "loadAverage": [
+        0,
+        0,
+        0
+      ]
+    },
+    "memory": {
+      "total": 4172324864,
+      "used": 3826761728,
+      "free": 345563136,
+      "usage": 91.72
+    },
+    "uptime": 37331.203,
+    "platform": "win32",
+    "arch": "x64",
+    "nodeVersion": "v24.13.0",
+    "pid": 13848
+  },
+  "application": {
+    "timestamp": "2026-03-21T06:01:47.255Z",
+    "memory": {
+      "rss": 9469952,
+      "heapTotal": 6352896,
+      "heapUsed": 5045840,
+      "external": 1618336,
+      "arrayBuffers": 10551
+    },
+    "cpu": {
+      "user": 156000,
+      "system": 171000
+    },
+    "uptime": 151.2054707,
+    "version": "1.0.0",
+    "environment": "development"
+  },
+  "business": {
+    "timestamp": "2026-03-21T06:01:47.255Z",
+    "activeUsers": 1025,
+    "battlesPerHour": 115,
+    "revenue": 11489,
+    "conversionRate": 0.09279726059849808,
+    "averageSessionDuration": 1648,
+    "errorRate": 3.3035590166650284,
+    "responseTime": 1174
+  },
+  "alerts": [
+    {
+      "type": "memory",
+      "severity": "warning",
+      "message": "Memory usage is 91.8% (threshold: 85%)",
+      "timestamp": "2026-03-21T05:59:17.108Z"
+    },
+    {
+      "type": "memory",
+      "severity": "warning",
+      "message": "Memory usage is 90.43% (threshold: 85%)",
+      "timestamp": "2026-03-21T05:59:47.126Z"
+    },
+    {
+      "type": "app_memory",
+      "severity": "warning",
+      "message": "Application memory usage is 86.46%",
+      "timestamp": "2026-03-21T05:59:47.126Z"
+    },
+    {
+      "type": "memory",
+      "severity": "warning",
+      "message": "Memory usage is 92.22% (threshold: 85%)",
+      "timestamp": "2026-03-21T06:00:17.134Z"
+    },
+    {
+      "type": "active_connections",
+      "severity": "info",
+      "message": "Active users: 1240 (threshold: 1000)",
+      "timestamp": "2026-03-21T06:00:17.134Z"
+    },
+    {
+      "type": "memory",
+      "severity": "warning",
+      "message": "Memory usage is 90.26% (threshold: 85%)",
+      "timestamp": "2026-03-21T06:00:47.143Z"
+    },
+    {
+      "type": "memory",
+      "severity": "warning",
+      "message": "Memory usage is 90.74% (threshold: 85%)",
+      "timestamp": "2026-03-21T06:01:17.149Z"
+    },
+    {
+      "type": "memory",
+      "severity": "warning",
+      "message": "Memory usage is 91.72% (threshold: 85%)",
+      "timestamp": "2026-03-21T06:01:47.254Z"
+    },
+    {
+      "type": "active_connections",
+      "severity": "info",
+      "message": "Active users: 1025 (threshold: 1000)",
+      "timestamp": "2026-03-21T06:01:47.255Z"
+    }
+  ]
+}

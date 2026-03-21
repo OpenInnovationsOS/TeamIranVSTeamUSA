@@ -1,0 +1,132 @@
+{
+  "system": {
+    "timestamp": "2026-03-08T11:51:28.210Z",
+    "cpu": {
+      "usage": 82.11,
+      "cores": 4,
+      "loadAverage": [
+        0,
+        0,
+        0
+      ]
+    },
+    "memory": {
+      "total": 4172324864,
+      "used": 3587989504,
+      "free": 584335360,
+      "usage": 85.99
+    },
+    "uptime": 21531.156,
+    "platform": "win32",
+    "arch": "x64",
+    "nodeVersion": "v24.13.0",
+    "pid": 15592
+  },
+  "application": {
+    "timestamp": "2026-03-08T11:51:28.213Z",
+    "memory": {
+      "rss": 32555008,
+      "heapTotal": 6352896,
+      "heapUsed": 4656952,
+      "external": 1618336,
+      "arrayBuffers": 10551
+    },
+    "cpu": {
+      "user": 171000,
+      "system": 234000
+    },
+    "uptime": 240.3325392,
+    "version": "1.0.0",
+    "environment": "development"
+  },
+  "business": {
+    "timestamp": "2026-03-08T11:51:28.213Z",
+    "activeUsers": 1123,
+    "battlesPerHour": 102,
+    "revenue": 7616,
+    "conversionRate": 0.12945154961711125,
+    "averageSessionDuration": 1771,
+    "errorRate": 2.513331131604322,
+    "responseTime": 651
+  },
+  "alerts": [
+    {
+      "type": "cpu",
+      "severity": "warning",
+      "message": "CPU usage is 82.37% (threshold: 80%)",
+      "timestamp": "2026-03-08T11:47:28.115Z"
+    },
+    {
+      "type": "active_connections",
+      "severity": "info",
+      "message": "Active users: 1496 (threshold: 1000)",
+      "timestamp": "2026-03-08T11:47:28.117Z"
+    },
+    {
+      "type": "cpu",
+      "severity": "warning",
+      "message": "CPU usage is 82.34% (threshold: 80%)",
+      "timestamp": "2026-03-08T11:47:58.138Z"
+    },
+    {
+      "type": "cpu",
+      "severity": "warning",
+      "message": "CPU usage is 82.31% (threshold: 80%)",
+      "timestamp": "2026-03-08T11:48:28.147Z"
+    },
+    {
+      "type": "cpu",
+      "severity": "warning",
+      "message": "CPU usage is 82.28% (threshold: 80%)",
+      "timestamp": "2026-03-08T11:48:58.156Z"
+    },
+    {
+      "type": "cpu",
+      "severity": "warning",
+      "message": "CPU usage is 82.24% (threshold: 80%)",
+      "timestamp": "2026-03-08T11:49:28.185Z"
+    },
+    {
+      "type": "cpu",
+      "severity": "warning",
+      "message": "CPU usage is 82.2% (threshold: 80%)",
+      "timestamp": "2026-03-08T11:49:58.188Z"
+    },
+    {
+      "type": "active_connections",
+      "severity": "info",
+      "message": "Active users: 1436 (threshold: 1000)",
+      "timestamp": "2026-03-08T11:49:58.189Z"
+    },
+    {
+      "type": "cpu",
+      "severity": "warning",
+      "message": "CPU usage is 82.16% (threshold: 80%)",
+      "timestamp": "2026-03-08T11:50:28.190Z"
+    },
+    {
+      "type": "cpu",
+      "severity": "warning",
+      "message": "CPU usage is 82.13% (threshold: 80%)",
+      "timestamp": "2026-03-08T11:50:58.191Z"
+    },
+    {
+      "type": "cpu",
+      "severity": "warning",
+      "message": "CPU usage is 82.11% (threshold: 80%)",
+      "timestamp": "2026-03-08T11:51:28.211Z"
+    },
+    {
+      "type": "memory",
+      "severity": "warning",
+      "message": "Memory usage is 85.99% (threshold: 85%)",
+      "timestamp": "2026-03-08T11:51:28.211Z"
+    },
+    {
+      "type": "active_connections",
+      "severity": "info",
+      "message": "Active users: 1123 (threshold: 1000)",
+      "timestamp": "2026-03-08T11:51:28.214Z"
+    }
+  ]
+}

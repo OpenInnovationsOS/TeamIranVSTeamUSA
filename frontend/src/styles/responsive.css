@@ -1,0 +1,553 @@
+/* 📱 RESPONSIVE DESIGN SYSTEM FOR CLICKER GAMES */
+
+/* ========================================
+   RESPONSIVE TEXT SCALING
+   ======================================== */
+
+.responsive-text-4xl { 
+  font-size: clamp(2rem, 6vw, 2.25rem); 
+  line-height: 1.2;
+}
+
+.responsive-text-3xl { 
+  font-size: clamp(1.5rem, 5vw, 1.875rem); 
+  line-height: 1.2;
+}
+
+.responsive-text-2xl { 
+  font-size: clamp(1.25rem, 4vw, 1.5rem); 
+  line-height: 1.2;
+}
+
+.responsive-text-xl { 
+  font-size: clamp(1.125rem, 3.5vw, 1.25rem); 
+  line-height: 1.4;
+}
+
+.responsive-text-lg { 
+  font-size: clamp(1rem, 3vw, 1.125rem); 
+  line-height: 1.4;
+}
+
+.responsive-text-base { 
+  font-size: clamp(0.875rem, 2.5vw, 1rem); 
+  line-height: 1.5;
+}
+
+.responsive-text-sm { 
+  font-size: clamp(0.75rem, 2vw, 0.875rem); 
+  line-height: 1.4;
+}
+
+/* ========================================
+   RESPONSIVE CONTAINERS & LAYOUT
+   ======================================== */
+
+.responsive-container { 
+  width: 100%; 
+  padding: 0 clamp(0.5rem, 3vw, 1rem); 
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.responsive-flex {
+  display: flex;
+  gap: clamp(0.5rem, 2vw, 1rem);
+  flex-wrap: wrap;
+}
+
+.responsive-flex-col {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.5rem, 2vw, 1rem);
+}
+
+.responsive-grid {
+  display: grid;
+  gap: clamp(0.75rem, 2.5vw, 1.5rem);
+  grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr));
+}
+
+.responsive-grid-2 {
+  display: grid;
+  gap: clamp(0.75rem, 2.5vw, 1.5rem);
+  grid-template-columns: repeat(auto-fit, minmax(min(200px, 100%), 1fr));
+}
+
+.responsive-grid-3 {
+  display: grid;
+  gap: clamp(0.75rem, 2.5vw, 1.5rem);
+  grid-template-columns: repeat(auto-fit, minmax(min(150px, 100%), 1fr));
+}
+
+/* ========================================
+   TOUCH-OPTIMIZED INTERACTIONS
+   ======================================== */
+
+.touch-target { 
+  min-height: 44px; 
+  min-width: 44px;
+  padding: clamp(0.5rem, 2vw, 1rem);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.touch-target-small {
+  min-height: 36px;
+  min-width: 36px;
+  padding: clamp(0.25rem, 1.5vw, 0.75rem);
+}
+
+.touch-target-large {
+  min-height: 52px;
+  min-width: 52px;
+  padding: clamp(0.75rem, 2.5vw, 1.25rem);
+}
+
+.responsive-touch {
+  transition: transform 0.1s ease-out, box-shadow 0.1s ease-out;
+  will-change: transform;
+}
+
+.responsive-touch:active {
+  transform: scale(0.95);
+}
+
+.responsive-touch:hover {
+  transform: scale(1.02);
+}
+
+/* Touch feedback ripple effect */
+.touch-feedback {
+  position: relative;
+  overflow: hidden;
+}
+
+.touch-feedback::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  transform: translate(-50%, -50%);
+  transition: width 0.3s ease-out, height 0.3s ease-out;
+  pointer-events: none;
+}
+
+.touch-feedback:active::after {
+  width: clamp(100px, 30vw, 200px);
+  height: clamp(100px, 30vw, 200px);
+}
+
+/* ========================================
+   SAFE AREA & VIEWPORT
+   ======================================== */
+
+.safe-area-all { 
+  padding: max(env(safe-area-inset-top, 0px), 1rem)
+              max(env(safe-area-inset-right, 0px), 1rem)
+              max(env(safe-area-inset-bottom, 0px), 1rem)
+              max(env(safe-area-inset-left, 0px), 1rem);
+  box-sizing: border-box;
+}
+
+.safe-area-top { 
+  padding-top: max(env(safe-area-inset-top, 0px), 1rem); 
+}
+
+.safe-area-bottom { 
+  padding-bottom: max(env(safe-area-inset-bottom, 0px), 1rem); 
+}
+
+.safe-area-horizontal { 
+  padding-left: max(env(safe-area-inset-left, 0px), 1rem);
+  padding-right: max(env(safe-area-inset-right, 0px), 1rem); 
+}
+
+.viewport-height {
+  height: 100vh;
+  height: 100dvh; /* Dynamic viewport height for mobile browsers */
+}
+
+.min-viewport-height {
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+/* ========================================
+   MOBILE-OPTIMIZED COMPONENTS
+   ======================================== */
+
+/* Click Circle Styles */
+.click-circle {
+  width: clamp(200px, 50vw, 320px);
+  height: clamp(200px, 50vw, 320px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  position: relative;
+  transition: transform 0.1s ease-out;
+}
+
+.click-circle:active {
+  transform: scale(0.95);
+}
+
+.click-circle-inner {
+  position: absolute;
+  inset: clamp(8px, 3vw, 16px);
+  border-radius: 50%;
+}
+
+/* Stats Cards */
+.stats-card {
+  background: rgba(26, 26, 26, 0.9);
+  border-radius: clamp(8px, 2vw, 16px);
+  padding: clamp(12px, 3vw, 20px);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Progress Bars */
+.progress-bar {
+  width: 100%;
+  height: clamp(6px, 1.5vw, 12px);
+  background: rgba(55, 65, 81, 0.5);
+  border-radius: clamp(3px, 1vw, 6px);
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #3b82f6, #60a5fa);
+  border-radius: clamp(3px, 1vw, 6px);
+  transition: width 0.3s ease-out;
+}
+
+/* ========================================
+   DARK MODE THEME
+   ======================================== */
+
+.bg-mobile-dark { background: #0a0a0a; }
+.bg-mobile-card { background: #1a1a1a; }
+.bg-mobile-elevated { background: #2a2a2a; }
+
+.text-mobile-primary { color: #ffffff; }
+.text-mobile-secondary { color: #a0a0a0; }
+.text-mobile-muted { color: #6a6a6a; }
+.text-mobile-accent { color: #3b82f6; }
+.text-mobile-success { color: #10b981; }
+.text-mobile-warning { color: #f59e0b; }
+.text-mobile-error { color: #ef4444; }
+
+/* Mobile-optimized shadows */
+.shadow-mobile {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3),
+              0 2px 4px -1px rgba(0, 0, 0, 0.2);
+}
+
+.shadow-mobile-lg {
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.4),
+              0 4px 6px -2px rgba(0, 0, 0, 0.3);
+}
+
+.shadow-mobile-xl {
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5),
+              0 10px 10px -5px rgba(0, 0, 0, 0.4);
+}
+
+/* ========================================
+   ANIMATIONS & TRANSITIONS
+   ======================================== */
+
+/* Pulse animation for click effects */
+@keyframes pulse-mobile {
+  0%, 100% { 
+    transform: scale(1); 
+    opacity: 1;
+  }
+  50% { 
+    transform: scale(1.1); 
+    opacity: 0.8;
+  }
+}
+
+.pulse-mobile {
+  animation: pulse-mobile 2s infinite;
+}
+
+/* Float animation for coins/gems */
+@keyframes float-mobile {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+.float-mobile {
+  animation: float-mobile 3s ease-in-out infinite;
+}
+
+/* Scale animation for buttons */
+@keyframes scale-mobile {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+.scale-mobile {
+  animation: scale-mobile 2s ease-in-out infinite;
+}
+
+/* Reduced motion for accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .pulse-mobile,
+  .float-mobile,
+  .scale-mobile,
+  .responsive-touch {
+    animation: none;
+    transition: none;
+  }
+  
+  .click-circle:active,
+  .touch-target:active {
+    transform: none;
+  }
+}
+
+/* ========================================
+   TELEGRAM WEBAPP INTEGRATION
+   ======================================== */
+
+/* Telegram WebApp viewport handling */
+.telegram-viewport {
+  height: 100vh;
+  height: var(--tg-viewport-height, 100vh);
+  overflow: hidden;
+}
+
+/* Telegram theme colors */
+.telegram-bg-primary { 
+  background: var(--tg-theme-bg-color, #0a0a0a); 
+}
+.telegram-bg-secondary { 
+  background: var(--tg-theme-secondary-bg-color, #1a1a1a); 
+}
+.telegram-text-primary { 
+  color: var(--tg-theme-text-color, #ffffff); 
+}
+.telegram-text-secondary { 
+  color: var(--tg-theme-hint-color, #a0a0a0); 
+}
+.telegram-button { 
+  background: var(--tg-theme-button-color, #3b82f6); 
+}
+.telegram-button-text { 
+  color: var(--tg-theme-button-text-color, #ffffff); 
+}
+
+/* Telegram safe areas */
+.telegram-safe-area {
+  padding: var(--tg-safe-area-inset-top, 0px)
+           var(--tg-safe-area-inset-right, 0px)
+           var(--tg-safe-area-inset-bottom, 0px)
+           var(--tg-safe-area-inset-left, 0px);
+}
+
+/* ========================================
+   BREAKPOINT-SPECIFIC ADJUSTMENTS
+   ======================================== */
+
+/* Small phones (320px - 480px) */
+@media (max-width: 480px) {
+  .responsive-text-4xl { 
+    font-size: clamp(1.5rem, 8vw, 2rem); 
+  }
+  
+  .click-circle {
+    width: clamp(150px, 60vw, 200px);
+    height: clamp(150px, 60vw, 200px);
+  }
+  
+  .responsive-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Large phones / Small tablets (481px - 768px) */
+@media (min-width: 481px) and (max-width: 768px) {
+  .responsive-container { 
+    padding: 0 clamp(1rem, 4vw, 2rem); 
+  }
+  
+  .responsive-grid-2 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Tablets (769px - 1024px) */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .responsive-container { 
+    padding: 0 clamp(2rem, 5vw, 3rem); 
+  }
+  
+  .responsive-grid-3 {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  
+  .click-circle {
+    width: clamp(250px, 30vw, 350px);
+    height: clamp(250px, 30vw, 350px);
+  }
+}
+
+/* Desktop (1025px+) */
+@media (min-width: 1025px) {
+  .responsive-container { 
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 clamp(2rem, 4vw, 4rem); 
+  }
+  
+  .responsive-grid {
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  }
+  
+  .click-circle {
+    width: 320px;
+    height: 320px;
+  }
+}
+
+/* ========================================
+   UTILITY CLASSES
+   ======================================== */
+
+.full-width { width: 100%; }
+.full-height { height: 100%; }
+.centered { margin: 0 auto; }
+.text-center { text-align: center; }
+.flex-center { 
+  display: flex; 
+  align-items: center; 
+  justify-content: center; 
+}
+.flex-col-center { 
+  display: flex; 
+  flex-direction: column; 
+  align-items: center; 
+  justify-content: center; 
+}
+
+/* Spacing utilities */
+.m-0 { margin: 0; }
+.m-1 { margin: clamp(0.25rem, 1vw, 0.5rem); }
+.m-2 { margin: clamp(0.5rem, 2vw, 1rem); }
+.m-3 { margin: clamp(0.75rem, 3vw, 1.5rem); }
+.m-4 { margin: clamp(1rem, 4vw, 2rem); }
+
+.p-0 { padding: 0; }
+.p-1 { padding: clamp(0.25rem, 1vw, 0.5rem); }
+.p-2 { padding: clamp(0.5rem, 2vw, 1rem); }
+.p-3 { padding: clamp(0.75rem, 3vw, 1.5rem); }
+.p-4 { padding: clamp(1rem, 4vw, 2rem); }
+
+/* Border radius utilities */
+.rounded { border-radius: clamp(4px, 1vw, 8px); }
+.rounded-lg { border-radius: clamp(8px, 2vw, 16px); }
+.rounded-xl { border-radius: clamp(12px, 3vw, 24px); }
+.rounded-2xl { border-radius: clamp(16px, 4vw, 32px); }
+.rounded-full { border-radius: 50%; }
+
+/* ========================================
+   GAME-SPECIFIC COMPONENTS
+   ======================================== */
+
+/* Clicker game main container */
+.clicker-game-container {
+  @apply bg-mobile-dark min-viewport-height safe-area-all responsive-container;
+}
+
+/* Click counter display */
+.click-counter {
+  @apply text-center mb-6;
+}
+
+.click-counter-value {
+  @apply responsive-text-4xl font-bold text-mobile-accent;
+}
+
+.click-counter-label {
+  @apply responsive-text-sm text-mobile-secondary;
+}
+
+/* Upgrade button */
+.upgrade-button {
+  @apply touch-target touch-responsive bg-mobile-card rounded-lg p-4 text-left transition-all;
+}
+
+.upgrade-button:disabled {
+  @apply opacity-50 cursor-not-allowed;
+}
+
+.upgrade-button:not(:disabled):hover {
+  @apply shadow-mobile-lg;
+}
+
+/* Achievement card */
+.achievement-card {
+  @apply bg-mobile-card rounded-lg p-4 border border-gray-700;
+}
+
+.achievement-card.unlocked {
+  @apply border-green-500 shadow-mobile;
+}
+
+/* Modal overlay */
+.modal-overlay {
+  @apply fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center safe-area-all p-4;
+  z-index: 1000;
+}
+
+.modal-content {
+  @apply bg-mobile-card rounded-xl max-w-lg w-full p-6 shadow-mobile-xl;
+}
+
+/* ========================================
+   PERFORMANCE OPTIMIZATIONS
+   ======================================== */
+
+/* GPU-accelerated animations */
+.gpu-accelerated {
+  transform: translateZ(0);
+  will-change: transform;
+}
+
+/* Optimize scrolling */
+.smooth-scroll {
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Prevent text selection during gameplay */
+.no-select {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* Hide scrollbars but keep functionality */
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}

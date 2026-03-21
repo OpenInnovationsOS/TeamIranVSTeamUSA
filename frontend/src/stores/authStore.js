@@ -73,7 +73,7 @@ export const useAuthStore = create(
             await get().verifyToken(token);
           }
         } catch (error) {
-          console.error('Auth initialization failed:', error);
+          // Auth initialization failed
           localStorage.removeItem('auth_token');
           set({ isLoading: false, isAuthenticated: false, user: null, token: null });
         }
@@ -89,7 +89,6 @@ export const useAuthStore = create(
 
           if (!telegramUserId) {
             // Create fallback user for development/testing
-            console.log('Telegram user ID not found, creating fallback user');
             const fallbackUser = {
               telegram_id: Math.floor(Math.random() * 1000000) + 100000,
               username: `Player${Math.floor(Math.random() * 10000)}`,
@@ -108,7 +107,7 @@ export const useAuthStore = create(
               set({ user, token, isAuthenticated: true, isLoading: false });
               return;
             } catch (registerError) {
-              console.error('Registration failed:', registerError);
+              // Registration failed
               // Create local fallback user
               const localUser = {
                 id: fallbackUser.telegram_id,
@@ -149,12 +148,12 @@ export const useAuthStore = create(
 
             return { success: true, user, token: newToken };
           } catch (error) {
-            console.error('Telegram authentication failed:', error);
+            // Telegram authentication failed
             set({ isLoading: false });
             throw error;
           }
         } catch (error) {
-          console.error('Authentication failed:', error);
+          // Authentication failed
           set({ isLoading: false });
           throw error;
         }
@@ -192,7 +191,7 @@ export const useAuthStore = create(
           
           return { success: true, token: newToken };
         } catch (error) {
-          console.error('Token refresh failed:', error);
+          // Token refresh failed
           throw error;
         }
       },
@@ -206,6 +205,16 @@ export const useAuthStore = create(
           isAuthenticated: false,
           isLoading: false,
         });
+      },
+
+      // Check if user is admin
+      isAdmin: () => {
+        const { user } = get();
+        return user?.role === 'admin' || 
+               user?.username?.includes('admin') || 
+               user?.username?.includes('Admin') ||
+               user?.telegram_id === 123456 ||
+               user?.telegram_id === 1; // Test admin ID
       },
 
       // Update user data

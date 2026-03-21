@@ -1,0 +1,325 @@
+# Alerting Rules for Team Iran vs USA Game
+# Define alert conditions and notifications
+
+groups:
+  - name: system_alerts
+    rules:
+      # High CPU Usage
+      - alert: HighCPUUsage
+        expr: 100 - (avg by(instance) (irate(node_cpu_seconds_total{mode="idle"}[5m])) * 100) > 80
+        for: 5m
+        labels:
+          severity: warning
+          service: system
+        annotations:
+          summary: "High CPU usage detected"
+          description: "CPU usage is above 80% for more than 5 minutes on instance {{ $labels.instance }}"
+
+      # High Memory Usage
+      - alert: HighMemoryUsage
+        expr: (node_memory_MemTotal_bytes - node_memory_MemAvailable_bytes) / node_memory_MemTotal_bytes * 100 > 85
+        for: 5m
+        labels:
+          severity: warning
+          service: system
+        annotations:
+          summary: "High memory usage detected"
+          description: "Memory usage is above 85% for more than 5 minutes on instance {{ $labels.instance }}"
+
+      # Disk Space Low
+      - alert: DiskSpaceLow
+        expr: (node_filesystem_avail_bytes / node_filesystem_size_bytes) * 100 < 10
+        for: 5m
+        labels:
+          severity: critical
+          service: system
+        annotations:
+          summary: "Low disk space"
+          description: "Disk space is below 10% on instance {{ $labels.instance }}"
+
+      # High Load Average
+      - alert: HighLoadAverage
+        expr: node_load15 > 2.0
+        for: 5m
+        labels:
+          severity: warning
+          service: system
+        annotations:
+          summary: "High load average"
+          description: "Load average is above 2.0 for more than 5 minutes on instance {{ $labels.instance }}"
+
+  - name: application_alerts
+    rules:
+      # Application Down
+      - alert: ApplicationDown
+        expr: up{job="team-iran-vs-usa-app"} == 0
+        for: 1m
+        labels:
+          severity: critical
+          service: application
+        annotations:
+          summary: "Application is down"
+          description: "Team Iran vs USA application is down on instance {{ $labels.instance }}"
+
+      # High Response Time
+      - alert: HighResponseTime
+        expr: histogram_quantile(0.95, rate(http_request_duration_seconds_bucket{job="team-iran-vs-usa-app"}[5m])) > 2
+        for: 5m
+        labels:
+          severity: warning
+          service: application
+        annotations:
+          summary: "High response time"
+          description: "95th percentile response time is above 2 seconds"
+
+      # High Error Rate
+      - alert: HighErrorRate
+        expr: rate(http_requests_total{job="team-iran-vs-usa-app",status=~"5.."}[5m]) / rate(http_requests_total{job="team-iran-vs-usa-app"}[5m]) > 0.05
+        for: 5m
+        labels:
+          severity: critical
+          service: application
+        annotations:
+          summary: "High error rate"
+          description: "Error rate is above 5% for more than 5 minutes"
+
+      # Low Request Rate
+      - alert: LowRequestRate
+        expr: rate(http_requests_total{job="team-iran-vs-usa-app"}[5m]) < 0.1
+        for: 10m
+        labels:
+          severity: warning
+          service: application
+        annotations:
+          summary: "Low request rate"
+          description: "Request rate is below 0.1 requests per second for more than 10 minutes"
+
+      # WebSocket Connection Issues
+      - alert: WebSocketConnectionIssues
+        expr: websocket_connections_total < 10
+        for: 5m
+        labels:
+          severity: warning
+          service: websocket
+        annotations:
+          summary: "Low WebSocket connections"
+          description: "WebSocket connections are below 10 for more than 5 minutes"
+
+  - name: database_alerts
+    rules:
+      # Database Down
+      - alert: DatabaseDown
+        expr: up{job="postgres-exporter"} == 0
+        for: 1m
+        labels:
+          severity: critical
+          service: database
+        annotations:
+          summary: "Database is down"
+          description: "PostgreSQL database is down on instance {{ $labels.instance }}"
+
+      # High Database Connections
+      - alert: HighDatabaseConnections
+        expr: pg_stat_database_numbackends / pg_settings_max_connections * 100 > 80
+        for: 5m
+        labels:
+          severity: warning
+          service: database
+        annotations:
+          summary: "High database connections"
+          description: "Database connections are above 80% of maximum"
+
+      # Slow Queries
+      - alert: SlowQueries
+        expr: pg_stat_statements_mean_time_seconds > 1
+        for: 5m
+        labels:
+          severity: warning
+          service: database
+        annotations:
+          summary: "Slow database queries"
+          description: "Average query time is above 1 second"
+
+      # Database Size Growing
+      - alert: DatabaseSizeGrowing
+        expr: increase(pg_database_size_bytes[24h]) > 1073741824  # 1GB
+        for: 1h
+        labels:
+          severity: warning
+          service: database
+        annotations:
+          summary: "Database size growing rapidly"
+          description: "Database size increased by more than 1GB in the last 24 hours"
+
+  - name: cache_alerts
+    rules:
+      # Redis Down
+      - alert: RedisDown
+        expr: up{job="redis-exporter"} == 0
+        for: 1m
+        labels:
+          severity: critical
+          service: cache
+        annotations:
+          summary: "Redis is down"
+          description: "Redis cache is down on instance {{ $labels.instance }}"
+
+      # High Memory Usage
+      - alert: RedisHighMemoryUsage
+        expr: redis_memory_used_bytes / redis_memory_max_bytes * 100 > 85
+        for: 5m
+        labels:
+          severity: warning
+          service: cache
+        annotations:
+          summary: "Redis high memory usage"
+          description: "Redis memory usage is above 85%"
+
+      # Low Hit Rate
+      - alert: RedisLowHitRate
+        expr: redis_keyspace_hits_total / (redis_keyspace_hits_total + redis_keyspace_misses_total) < 0.8
+        for: 10m
+        labels:
+          severity: warning
+          service: cache
+        annotations:
+          summary: "Redis low hit rate"
+          description: "Redis cache hit rate is below 80%"
+
+  - name: business_alerts
+    rules:
+      # Low Active Users
+      - alert: LowActiveUsers
+        expr: active_users_total < 50
+        for: 15m
+        labels:
+          severity: warning
+          service: business
+        annotations:
+          summary: "Low active users"
+          description: "Active users count is below 50 for more than 15 minutes"
+
+      # High Error Rate
+      - alert: BusinessHighErrorRate
+        expr: business_error_rate > 0.05
+        for: 5m
+        labels:
+          severity: critical
+          service: business
+        annotations:
+          summary: "High business error rate"
+          description: "Business error rate is above 5%"
+
+      # Low Battle Rate
+      - alert: LowBattleRate
+        expr: battles_per_hour < 10
+        for: 30m
+        labels:
+          severity: warning
+          service: business
+        annotations:
+          summary: "Low battle rate"
+          description: "Battle rate is below 10 per hour for more than 30 minutes"
+
+      # Revenue Drop
+      - alert: RevenueDrop
+        expr: revenue_per_hour < 100
+        for: 1h
+        labels:
+          severity: warning
+          service: business
+        annotations:
+          summary: "Revenue drop"
+          description: "Revenue per hour is below 100 for more than 1 hour"
+
+      # High Response Time
+      - alert: BusinessHighResponseTime
+        expr: business_response_time_seconds > 2
+        for: 5m
+        labels:
+          severity: warning
+          service: business
+        annotations:
+          summary: "High business response time"
+          description: "Business response time is above 2 seconds"
+
+  - name: security_alerts
+    rules:
+      # High Failed Login Rate
+      - alert: HighFailedLoginRate
+        expr: failed_login_rate > 0.1
+        for: 5m
+        labels:
+          severity: warning
+          service: security
+        annotations:
+          summary: "High failed login rate"
+          description: "Failed login rate is above 10%"
+
+      # Suspicious Activity
+      - alert: SuspiciousActivity
+        expr: suspicious_requests_total > 10
+        for: 1m
+        labels:
+          severity: critical
+          service: security
+        annotations:
+          summary: "Suspicious activity detected"
+          description: "Suspicious requests detected from IP addresses"
+
+      # Rate Limit Exceeded
+      - alert: RateLimitExceeded
+        expr: rate_limit_exceeded_total > 100
+        for: 5m
+        labels:
+          severity: warning
+          service: security
+        annotations:
+          summary: "Rate limit exceeded"
+          description: "Rate limit exceeded 100 times in the last 5 minutes"
+
+  - name: infrastructure_alerts
+    rules:
+      # Container Down
+      - alert: ContainerDown
+        expr: up == 0
+        for: 1m
+        labels:
+          severity: critical
+          service: infrastructure
+        annotations:
+          summary: "Container is down"
+          description: "Container {{ $labels.instance }} is down"
+
+      # Container Restarting
+      - alert: ContainerRestarting
+        expr: container_start_time_seconds - container_start_time_seconds offset 1m < 0
+        for: 5m
+        labels:
+          severity: warning
+          service: infrastructure
+        annotations:
+          summary: "Container restarting"
+          description: "Container {{ $labels.instance }} is restarting frequently"
+
+      # High Network Traffic
+      - alert: HighNetworkTraffic
+        expr: rate(container_network_transmit_bytes_total[5m]) > 10485760  # 10MB/s
+        for: 5m
+        labels:
+          severity: warning
+          service: infrastructure
+        annotations:
+          summary: "High network traffic"
+          description: "Network traffic is above 10MB/s"
+
+      # Disk I/O High
+      - alert: DiskIOHigh
+        expr: rate(container_fs_reads_bytes_total[5m]) + rate(container_fs_writes_bytes_total[5m]) > 10485760  # 10MB/s
+        for: 5m
+        labels:
+          severity: warning
+          service: infrastructure
+        annotations:
+          summary: "High disk I/O"
+          description: "Disk I/O is above 10MB/s"

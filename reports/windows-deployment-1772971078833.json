@@ -1,0 +1,27 @@
+{
+  "deployment": {
+    "timestamp": "2026-03-08T11:57:58.832Z",
+    "duration": 221073,
+    "platform": "Windows",
+    "status": "completed"
+  },
+  "services": {
+    "application": "running",
+    "database": "sqlite-local",
+    "redis": "configured",
+    "monitoring": "enabled",
+    "backup": "configured"
+  },
+  "access": {
+    "application": "http://localhost:3000",
+    "api": "http://localhost:3000/api",
+    "health": "http://localhost:3000/health"
+  },
+  "nextSteps": [
+    "Test application features",
+    "Configure production database",
+    "Set up production Redis",
+    "Configure SSL certificates",
+    "Deploy to production server"
+  ]
+}

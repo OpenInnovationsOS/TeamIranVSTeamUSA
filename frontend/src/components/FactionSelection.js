@@ -128,7 +128,7 @@ const InfoBox = styled.div`
 const FactionSelection = () => {
   const [selectedFaction, setSelectedFaction] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const { user, updateUser } = useAuthStore();
+  const { updateUser } = useAuthStore();
   const { hapticFeedback, showAlert } = useTelegram();
 
   const factions = [
@@ -158,7 +158,7 @@ const FactionSelection = () => {
     hapticFeedback('impact');
 
     try {
-      const response = await fetch('/api/game/faction/select', {
+      const response = await fetch('http://localhost:3001/api/game/faction/select', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -166,6 +166,10 @@ const FactionSelection = () => {
         },
         body: JSON.stringify({ faction: selectedFaction })
       });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
 
       const data = await response.json();
 

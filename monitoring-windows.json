@@ -1,0 +1,6 @@
+{
+  "enabled": true,
+  "metricsPath": "logs/metrics.json",
+  "logPath": "logs/app.log",
+  "healthCheckInterval": 30000
+}

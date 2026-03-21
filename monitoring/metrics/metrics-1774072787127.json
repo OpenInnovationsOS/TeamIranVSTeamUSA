@@ -1,0 +1,72 @@
+{
+  "system": {
+    "timestamp": "2026-03-21T05:59:47.126Z",
+    "cpu": {
+      "usage": 21.51,
+      "cores": 4,
+      "loadAverage": [
+        0,
+        0,
+        0
+      ]
+    },
+    "memory": {
+      "total": 4172324864,
+      "used": 3772854272,
+      "free": 399470592,
+      "usage": 90.43
+    },
+    "uptime": 37211.078,
+    "platform": "win32",
+    "arch": "x64",
+    "nodeVersion": "v24.13.0",
+    "pid": 13848
+  },
+  "application": {
+    "timestamp": "2026-03-21T05:59:47.126Z",
+    "memory": {
+      "rss": 30150656,
+      "heapTotal": 6352896,
+      "heapUsed": 5492952,
+      "external": 1618336,
+      "arrayBuffers": 10551
+    },
+    "cpu": {
+      "user": 140000,
+      "system": 93000
+    },
+    "uptime": 31.0765997,
+    "version": "1.0.0",
+    "environment": "development"
+  },
+  "business": {
+    "timestamp": "2026-03-21T05:59:47.126Z",
+    "activeUsers": 804,
+    "battlesPerHour": 149,
+    "revenue": 10791,
+    "conversionRate": 0.06244187908674005,
+    "averageSessionDuration": 955,
+    "errorRate": 2.2895707757807866,
+    "responseTime": 220
+  },
+  "alerts": [
+    {
+      "type": "memory",
+      "severity": "warning",
+      "message": "Memory usage is 91.8% (threshold: 85%)",
+      "timestamp": "2026-03-21T05:59:17.108Z"
+    },
+    {
+      "type": "memory",
+      "severity": "warning",
+      "message": "Memory usage is 90.43% (threshold: 85%)",
+      "timestamp": "2026-03-21T05:59:47.126Z"
+    },
+    {
+      "type": "app_memory",
+      "severity": "warning",
+      "message": "Application memory usage is 86.46%",
+      "timestamp": "2026-03-21T05:59:47.126Z"
+    }
+  ]
+}

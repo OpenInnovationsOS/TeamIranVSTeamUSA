@@ -168,7 +168,6 @@ weaponSchema.statics = {
           ]
         }
       ]
-    }
     };
 
     if (filters.category) searchQuery.$and.push({ category: filters.category });
