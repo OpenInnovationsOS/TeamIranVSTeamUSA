@@ -1,282 +1,169 @@
-# 📚 Team Iran vs USA - Complete Documentation
+# Team Iran vs Team USA - Telegram Mini-Game/P2E
 
-## 🎯 **PROJECT OVERVIEW**
+A Telegram Mini-Game with Play-to-Earn mechanics where players choose between Team Iran and Team USA factions and compete in various challenges.
 
-Welcome to the complete documentation for **Team Iran vs USA** - a comprehensive battle gaming platform featuring advanced inventory systems, iPhone UI design, and Telegram Web App integration.
+## 🎮 Game Features
 
----
+- **Faction Selection**: Choose between Team Iran or Team USA
+- **Tap-to-Earn**: Simple tap mechanics to earn STG tokens
+- **PvP Battles**: Head-to-head battles with STG wagers
+- **Territory Control**: Global map with faction influence
+- **Daily Missions**: Quests and challenges for rewards
+- **Leaderboards**: Global and faction-specific rankings
+- **Referral System**: Viral growth mechanics
+- **WIN Token**: Native cryptocurrency with 1 trillion supply
 
-## 📋 **DOCUMENTATION INDEX**
+## 💰 Token System
 
-### 🎮 **CORE SYSTEMS**
+### Three-Currency Model
 
-#### **⚔️ Battle Arena System**
-- **[BATTLE_ARENA_INTEGRATION.md](./BATTLE_ARENA_INTEGRATION.md)** - Complete battle system implementation guide
-- **[COMPLETE_BATTLE_IMPLEMENTATION.md](./COMPLETE_BATTLE_IMPLEMENTATION.md)** - Deep battle mechanics and features
-- **[BATTLE_ARENA_DEEP_INVESTIGATION.md](./BATTLE_ARENA_DEEP_INVESTIGATION.md)** - Technical investigation and analysis
+1. **TON**: External payment currency for premium features
+2. **STG (Strategy Token)**: Off-chain in-game currency earned through gameplay
+3. **WIN Token**: On-chain native token (1 trillion supply) for rewards and staking
 
-#### **📦 Inventory System**
-- **[INVENTORY_SYSTEM_COMPLETE.md](./INVENTORY_SYSTEM_COMPLETE.md)** - Complete inventory management system
-- **[WEAPON-SYSTEM.md](./WEAPON-SYSTEM.md)** - Advanced weapon mechanics and upgrades
+## 🛠 Tech Stack
 
-#### **📱 iPhone UI Design**
-- **[IPHONE_UI_COMPLETE.md](./IPHONE_UI_COMPLETE.md)** - Complete iPhone UI design system
-- **[GAME-UI-COMPLETE-GUIDE.md](./GAME-UI-COMPLETE-GUIDE.md)** - UI implementation guide
+### Backend
+- Node.js with Express
+- PostgreSQL for data storage
+- Redis for rate limiting and caching
+- Telegram Bot API integration
+- TON blockchain integration
 
-### 🏗️ **ARCHITECTURE & DEPLOYMENT**
+### Frontend
+- React with Telegram WebApp SDK
+- TON Connect for wallet integration
+- Responsive design for mobile
 
-#### **🏛️ System Architecture**
-- **[GAME-ARCHITECTURE.md](./GAME-ARCHITECTURE.md)** - Complete system architecture overview
-- **[DATABASE-COMPARISON.md](./DATABASE-COMPARISON.md)** - Database technology comparison
-- **[README-POSTGRESQL-OPTIMIZATION.md](./README-POSTGRESQL-OPTIMIZATION.md)** - PostgreSQL optimization guide
+### Blockchain
+- TON (Telegram Open Network)
+- Smart contracts for WIN token
+- Treasury contract for TON payments
 
-#### **🚀 Deployment Guides**
-- **[DEPLOYMENT.md](./DEPLOYMENT.md)** - Complete deployment guide
-- **[DEPLOYMENT-COMPLETE.md](./DEPLOYMENT-COMPLETE.md)** - Advanced deployment strategies
-- **[RAILWAY-DEPLOYMENT-GUIDE.md](./RAILWAY-DEPLOYMENT-GUIDE.md)** - Railway deployment
-- **[VERCEL-DEPLOYMENT-GUIDE.md](./VERCEL-DEPLOYMENT-GUIDE.md)** - Vercel deployment
+## 🚀 Quick Start
 
-#### **🗄️ Database Setup**
-- **[SUPABASE-COMPLETE-GUIDE.md](./SUPABASE-COMPLETE-GUIDE.md)** - Supabase integration
-- **[SUPABASE-DEPLOYMENT-PLAN.md](./SUPABASE-DEPLOYMENT-PLAN.md)** - Database deployment
-- **[SECRETS-SETUP-GUIDE.md](./SECRETS-SETUP-GUIDE.md)** - Environment configuration
+### Prerequisites
+- Node.js 16+
+- PostgreSQL
+- Redis
+- Telegram Bot Token
+- TON API credentials
 
-### 💰 **MONETIZATION & BUSINESS**
+### Installation
 
-#### **💸 Payment Systems**
-- **[PAYMENT-ANALYTICS-SYSTEM.md](./PAYMENT-ANALYTICS-SYSTEM.md)** - Payment analytics
-- **[MONETIZATION-STRATEGY.md](./MONETIZATION-STRATEGY.md)** - Monetization strategy
-- **[TON-BLOCKCHAIN-INTEGRATION.md](./TON-BLOCKCHAIN-INTEGRATION.md)** - TON blockchain integration
+1. Clone the repository
+```bash
+git clone <repository-url>
+cd team-iran-vs-usa-telegram-game
+```
 
-#### **👑 Admin Features**
-- **[ADMIN-DASHBOARD-FEATURES.md](./ADMIN-DASHBOARD-FEATURES.md)** - Admin panel features
-- **[SUPER-ADMIN-MONETIZATION-GUIDE.md](./SUPER-ADMIN-MONETIZATION-GUIDE.md)** - Admin monetization
+2. Install dependencies
+```bash
+npm install
+```
 
-### 🔧 **DEVELOPMENT & OPERATIONS**
+3. Set up environment variables
+```bash
+cp .env.example .env
+# Edit .env with your configuration
+```
 
-#### **🛠️ Development Guides**
-- **[DEEP-IMPLEMENTATION-ANALYSIS.md](./DEEP-IMPLEMENTATION-ANALYSIS.md)** - Implementation analysis
-- **[DEEP-FIX-REPORT.md](./DEEP-FIX-REPORT.md)** - Bug fixes and improvements
-- **[RUNBOOKS.md](./RUNBOOKS.md)** - Operational runbooks
+4. Set up database
+```bash
+npm run migrate
+npm run seed
+```
 
-#### **🔐 Security & Access**
-- **[ACCESS-POINTS-GUIDE.md](./ACCESS-POINTS-GUIDE.md)** - Access control
-- **[COMPLETE-ACCESS-POINTS-FIX.md](./COMPLETE-ACCESS-POINTS-FIX.md)** - Security fixes
-- **[SECRET-REMEDIATION.md](./SECRET-REMEDIATION.md)** - Security remediation
+5. Start the server
+```bash
+npm run dev
+```
 
-### 📊 **PROJECT MANAGEMENT**
+## 📁 Project Structure
 
-#### **📈 Status & Progress**
-- **[UI-OPERATIONAL-STATUS.md](./UI-OPERATIONAL-STATUS.md)** - UI operational status
-- **[FULL-UI-OPERATIONAL-STATUS.md](./FULL-UI-OPERATIONAL-STATUS.md)** - Complete UI status
-- **[ULTIMATE-STATUS-REPORT.md](./ULTIMATE-STATUS-REPORT.md)** - Project status report
+```
+├── src/
+│   ├── server.js              # Main server file
+│   ├── controllers/           # API controllers
+│   ├── models/               # Database models
+│   ├── services/             # Business logic
+│   ├── middleware/           # Express middleware
+│   ├── routes/               # API routes
+│   ├── database/             # Database setup and migrations
+│   ├── telegram/             # Telegram bot logic
+│   ├── blockchain/           # TON integration
+│   └── utils/                # Utility functions
+├── frontend/                 # React frontend
+├── contracts/                # Smart contracts
+├── docs/                    # Documentation
+└── scripts/                 # Utility scripts
+```
 
-#### **🤝 Collaboration**
-- **[GITHUB-COLLABORATOR-GUIDE.md](./GITHUB-COLLABORATOR-GUIDE.md)** - GitHub collaboration
-- **[DUAL-REPO-COMMANDS.md](./DUAL-REPO-COMMANDS.md)** - Repository management
+## 🎯 Game Mechanics
 
-### 🌐 **EXTERNAL INTEGRATIONS**
+### Tap-to-Earn
+- Players tap to earn STG tokens
+- Rate limited to prevent abuse
+- Rewards scale with player level
 
-#### **📱 Mobile & Social**
-- **[FIXED-TELEGRAM-INTEGRATION.md](./FIXED-TELEGRAM-INTEGRATION.md)** - Telegram integration
-- **[OPENINNOVATIONS-ACCESS.md](./OPENINNOVATIONS-ACCESS.md)** - OpenInnovations access
+### PvP Battles
+- Players wager STG tokens
+- Winner takes all
+- Faction bonuses apply
 
-#### **☁️ Cloud Services**
-- **[ZERO-BUDGET-SUPABASE-STRATEGY.md](./ZERO-BUDGET-SUPABASE-STRATEGY.md)** - Cost optimization
-- **[AUTO-DEPLOY-COMPLETE.md](./AUTO-DEPLOY-COMPLETE.md)** - Automated deployment
+### Territory Control
+- Global map divided into territories
+- Factions compete for control
+- Collective effort determines influence
 
----
+### Daily Missions
+- New challenges every day
+- Varying difficulty levels
+- Bonus rewards for completion
 
-## 🎯 **QUICK START GUIDE**
+## 🔐 Security Features
 
-### 🚀 **For New Developers**
+- Rate limiting with Redis
+- Anti-cheat mechanisms
+- Secure JWT authentication
+- Multisig treasury protection
+- Smart contract audits
 
-1. **Read the Architecture**: Start with [GAME-ARCHITECTURE.md](./GAME-ARCHITECTURE.md)
-2. **Setup Database**: Follow [SUPABASE-COMPLETE-GUIDE.md](./SUPABASE-COMPLETE-GUIDE.md)
-3. **Deploy**: Use [DEPLOYMENT-COMPLETE.md](./DEPLOYMENT-COMPLETE.md)
-4. **UI Implementation**: Check [IPHONE_UI_COMPLETE.md](./IPHONE_UI_COMPLETE.md)
+## 📈 Scalability
 
-### 📱 **For Mobile Development**
+- Horizontal scaling support
+- Database read replicas
+- Redis clustering
+- CDN for static assets
+- Load balancing ready
 
-1. **iPhone UI Guide**: [IPHONE_UI_COMPLETE.md](./IPHONE_UI_COMPLETE.md)
-2. **Battle System**: [BATTLE_ARENA_INTEGRATION.md](./BATTLE_ARENA_INTEGRATION.md)
-3. **Inventory System**: [INVENTORY_SYSTEM_COMPLETE.md](./INVENTORY_SYSTEM_COMPLETE.md)
+## ⚠️ Legal & Ethical Considerations
 
-### 🔧 **For System Administrators**
+- Fictionalized conflict theme
+- Compliance with Telegram ToS
+- Regulatory compliance for tokens
+- No guaranteed financial returns
+- Responsible gaming practices
 
-1. **Deployment**: [RAILWAY-DEPLOYMENT-GUIDE.md](./RAILWAY-DEPLOYMENT-GUIDE.md)
-2. **Security**: [SECRETS-SETUP-GUIDE.md](./SECRETS-SETUP-GUIDE.md)
-3. **Operations**: [RUNBOOKS.md](./RUNBOOKS.md)
+## 🤝 Contributing
 
----
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Add tests if applicable
+5. Submit a pull request
 
-## 📊 **SYSTEM COMPLETENESS**
+## 📄 License
 
-| Component | Status | Documentation |
-|-----------|--------|---------------|
-| 🎮 Battle Arena | ✅ 100% Complete | [BATTLE_ARENA_INTEGRATION.md](./BATTLE_ARENA_INTEGRATION.md) |
-| 📦 Inventory System | ✅ 100% Complete | [INVENTORY_SYSTEM_COMPLETE.md](./INVENTORY_SYSTEM_COMPLETE.md) |
-| 📱 iPhone UI | ✅ 100% Complete | [IPHONE_UI_COMPLETE.md](./IPHONE_UI_COMPLETE.md) |
-| 🏗️ Architecture | ✅ 100% Complete | [GAME-ARCHITECTURE.md](./GAME-ARCHITECTURE.md) |
-| 🚀 Deployment | ✅ 100% Complete | [DEPLOYMENT-COMPLETE.md](./DEPLOYMENT-COMPLETE.md) |
-| 🗄️ Database | ✅ 100% Complete | [SUPABASE-COMPLETE-GUIDE.md](./SUPABASE-COMPLETE-GUIDE.md) |
-| 💰 Monetization | ✅ 100% Complete | [MONETIZATION-STRATEGY.md](./MONETIZATION-STRATEGY.md) |
-| 🔐 Security | ✅ 100% Complete | [SECRETS-SETUP-GUIDE.md](./SECRETS-SETUP-GUIDE.md) |
+MIT License - see LICENSE file for details
 
-**🎉 OVERALL PROJECT: 100% COMPLETE** 
+## 🆘 Support
 
----
-
-## 🏆 **KEY ACHIEVEMENTS**
-
-### ✅ **Major Milestones Completed**
-- **Complete Battle System** with real-time multiplayer
-- **Advanced Inventory Management** with shop and trading
-- **Native iPhone UI** design system
-- **Comprehensive Architecture** with scalability
-- **Multi-Platform Deployment** strategies
-- **Security & Access Control** implementation
-- **Monetization Integration** with payment systems
-- **Documentation Coverage** for all systems
-
-### 🎮 **Game Features**
-- **Real-time Battles** with WebSocket communication
-- **Advanced Inventory** with weapons, skins, collectibles
-- **Achievement System** with progress tracking
-- **Shop System** with cart and checkout
-- **Trading System** for player interactions
-- **Crafting System** with recipes and materials
-
-### 📱 **Mobile Excellence**
-- **Native iPhone UI** following Apple HIG
-- **Telegram Web App** integration
-- **Touch-Optimized** interactions
-- **Responsive Design** for all screen sizes
-- **Performance Optimized** for mobile devices
-
----
-
-## 🔧 **TECHNICAL STACK**
-
-### 🎨 **Frontend**
-- **React** with hooks and state management
-- **Styled Components** for component styling
-- **Framer Motion** for animations
-- **iPhone UI Design System** for native feel
-
-### 🗄️ **Backend**
-- **Node.js** with Express.js
-- **PostgreSQL** with optimized schema
-- **WebSocket** for real-time communication
-- **JWT** authentication system
-
-### 🚀 **Deployment**
-- **Railway** for primary hosting
-- **Vercel** for frontend deployment
-- **Supabase** for database services
-- **GitHub Actions** for CI/CD
-
-### 📱 **Mobile**
-- **Telegram Web App** integration
-- **iPhone UI** design system
-- **Touch-optimized** interactions
-- **Responsive design** patterns
+For support and questions:
+- Create an issue in the repository
+- Join our Telegram community
+- Check the documentation in `/docs`
 
 ---
 
-## 🎯 **GETTING STARTED**
-
-### 🚀 **Quick Setup**
-
-1. **Clone Repository**
-   \`\`\`bash
-   git clone https://github.com/your-repo/team-iran-vs-usa.git
-   cd team-iran-vs-usa
-   \`\`\`
-
-2. **Install Dependencies**
-   \`\`\`bash
-   npm install
-   \`\`\`
-
-3. **Setup Environment**
-   \`\`\`bash
-   cp .env.example .env
-   # Configure your environment variables
-   \`\`\`
-
-4. **Start Development**
-   \`\`\`bash
-   npm run dev
-   \`\`\`
-
-### 📖 **Recommended Reading Order**
-
-1. **[GAME-ARCHITECTURE.md](./GAME-ARCHITECTURE.md)** - Understand the system
-2. **[IPHONE_UI_COMPLETE.md](./IPHONE_UI_COMPLETE.md)** - Learn the UI system
-3. **[INVENTORY_SYSTEM_COMPLETE.md](./INVENTORY_SYSTEM_COMPLETE.md)** - Master inventory
-4. **[BATTLE_ARENA_INTEGRATION.md](./BATTLE_ARENA_INTEGRATION.md)** - Implement battles
-5. **[DEPLOYMENT-COMPLETE.md](./DEPLOYMENT-COMPLETE.md)** - Deploy to production
-
----
-
-## 📞 **SUPPORT & CONTRIBUTING**
-
-### 🤝 **How to Contribute**
-1. Read [GITHUB-COLLABORATOR-GUIDE.md](./GITHUB-COLLABORATOR-GUIDE.md)
-2. Follow the contribution guidelines
-3. Submit pull requests with proper documentation
-
-### 🐛 **Bug Reports**
-1. Check existing issues in the repository
-2. Follow the bug report template
-3. Provide detailed reproduction steps
-
-### 📧 **Contact**
-- **Documentation Issues**: Create GitHub issue
-- **Technical Questions**: Use GitHub discussions
-- **Security Issues**: Follow [SECRET-REMEDIATION.md](./SECRET-REMEDIATION.md)
-
----
-
-## 🎉 **PROJECT STATUS**
-
-### ✅ **COMPLETE SYSTEMS**
-- **Battle Arena**: Real-time multiplayer battles ✅
-- **Inventory System**: Complete shop and management ✅
-- **iPhone UI**: Native mobile experience ✅
-- **Database**: Optimized PostgreSQL schema ✅
-- **API**: Complete REST endpoints ✅
-- **Authentication**: JWT-based security ✅
-- **Deployment**: Multi-platform strategies ✅
-- **Documentation**: Comprehensive guides ✅
-
-### 🚀 **PRODUCTION READY**
-- **Scalable Architecture** ✅
-- **Security Hardened** ✅
-- **Performance Optimized** ✅
-- **Mobile Responsive** ✅
-- **Well Documented** ✅
-- **Test Coverage** ✅
-
----
-
-## 🏆 **CONCLUSION**
-
-**Team Iran vs USA** is a **complete, production-ready gaming platform** featuring:
-
-- 🎮 **Advanced Battle System** with real-time multiplayer
-- 📦 **Complete Inventory Management** with shop and trading
-- 📱 **Native iPhone UI** for premium mobile experience
-- 🏗️ **Scalable Architecture** for enterprise deployment
-- 💰 **Monetization Ready** with payment integration
-- 🔐 **Security Focused** with proper authentication
-- 📚 **Fully Documented** with comprehensive guides
-
-**The project is 100% complete and ready for production deployment!** 🎯
-
----
-
-*Last Updated: March 8, 2026*
-*Documentation Version: 1.0*
-*Project Status: Production Ready ✅*
+⚠️ **Disclaimer**: This is a game for entertainment purposes. No real-world political conflict is intended. Please play responsibly.
